@@ -48,7 +48,8 @@ items = {
 		"takable1" : [False, "Taking an angry guard will do no good..."],
 		"takable2" : [False, "Taking a dead body sounds disgusting..."],
 		"movable1" : [False, "You can't move the guard."],
-		"kickable1" : [False, "You call the guard. When he is near enough you kick him through the door bars. "],
+		"kickable1" : [False, "You call the guard. When he is near enough you kick him through the door bars. The guard begins to scream."
+		 "Two other guards come to help him. They then kill you."],
 		"kickable2" : [True, "You kick the guard's dead body. That was so macabre..."]
 		},
 	"keys" : {
@@ -85,7 +86,7 @@ items = {
 		"look1" : "A heavy wooden box. It feels like it is full with sand.",
 		"keywords" : ["box", "wooden"],
 		"takable1" : [False, "The box is too heavy to be taken."],
-		"movable1" : [True, "You move the box and place it over the round button. The gate to the south opens..."],
+		"movable1" : [True, "With effort you move the box and place it over the round button. The gate to the south opens..."],
 		"kickable1" : [True, "You kick the wooden box. That hurts..."]
 		},
 	"button": {
@@ -115,10 +116,11 @@ items = {
 	"wardrobe": {
 		"room" : "eastern cell",
 		"look1" : "A little wooden wardrobe. It is attached to the wall at a low height. It is locked.",
+		"look2" : "A broken wardrobe.",
 		"keywords" : ["wardrobe", "wooden", "furniture"],
 		"takable1" : [False, "You can't take the wardrobe. It is attached to the wall."],
 		"movable1" : [False, "You can't move the wardrobe. It is attached to the wall."],
-		"kickable1" : [True, "You kick the wardrobe and it tears apart. There is a leather pouch inside."]
+		"kickable1" : [True, "You kick the wardrobe until it tears apart. There is a leather pouch inside."]
 		},
 	"pouch": {
 		"room" : "eastern cell",
@@ -136,7 +138,7 @@ items = {
 		"keywords" : ["two guards", "guard", "guards", "sleeping", "guardian", "guardians", "sentinel", "sentinels"],
 		"takable1" : [False, "You can't take the guards."],
 		"movable1" : [False, "You can't move the guards."],
-		"kickable1" : [True, "You run to the guards and start kicking them."],
+		"kickable1" : [True, "You run to the guards and start kicking them. They stand up and strike you back. They kill you."],
 		"kickable2" : [True, "You kick the sleeping guards. They can't feel the pain."]
 		},
 	"beer jars": {
@@ -165,8 +167,8 @@ items = {
 		"keywords" : ["bench", "wooden"],
 		"takable1" : [False, "You can't take the bench."],
 		"movable1" : [True, "You start moving the bench. The guards react to this and when they look at you they "
-		"realise that you are a prisioner."],
-		"movable2" : ["You move the bench so that it no longer blocks the door to the south."],
+		"realise that you are a prisioner. They the kill you."],
+		"movable2" : ["You move the bench so that it no longer blocks the exit to the south."],
 		"kickable1" : [True, "You kick the bench. It hurts..."]
 		},
 	"wardrobe south": {
@@ -195,7 +197,7 @@ items = {
 		"takable1" : [True, "You try to take the spikes, but your body falls on them. You die."],
 		"takable2" : [False, "You can't take the trap."],
 		"movable1" : [True, "You try to move the spikes, but your body falls on them. You die."],
-		"movable2" : [False, "You can't move the trap."],
+		"movable2" : [False, "You can't move the trap."],	q
 		"kickable1" : [True, "You try to kick the spikes, but your body falls on them. You die."],
 		"kickable2" : [False, "You can't kick the trap."]
 		},

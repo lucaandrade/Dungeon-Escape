@@ -69,9 +69,9 @@ rooms = {
 		"name" : "THE GUARDS' ROOM",
 		"info" : "You are at the guards' room.",
 		"look1" : "You see two guards playing cards and drinking beer in big jars. They believe you are one of them. "
-		"There is a bench blocking a door to the south.",
-		"look2" : "The guards sleep deeply. There is a bench blocking a door to the south.",
-		"look3" : "The guards sleep deeply. The bench no longer blocks the door to the south.",
+		"There is a bench blocking an exit to the south.",
+		"look2" : "The guards sleep deeply. There is a bench blocking an exit to the south.",
+		"look3" : "The guards sleep deeply. The bench no longer blocks the exit to the south.",
 		"doorOpen" : {"north" : [True, "corridor"], "south" : [False, "southern room"], "west" : [True, "darkness"]},
 		"items" : ["two guards", "beer jars", "bench"],
 		"hint" : "What can those powders in the leather couch be used for? They might combine perfectly with the beers... "
@@ -92,7 +92,7 @@ rooms = {
 		"name" : "DARKNESS",
 		"info" : "You are now in darkness...",
 		"info1" : "The only light in the darkness is the flame that shines in a torch.",
-		"look1" : "The only thing your eyes manage to see is a kind of door to the east ",
+		"look1" : "The only thing your eyes manage to see is a kind of exit to the east ",
 		"look2" : "The shining flame of the torch lets you discover a spike trap installed in the center of the room. By the trap's side there is "
 		"a button on the floor.",
 		"look3" : "The trap has been deactivated. The spikes are down.",
