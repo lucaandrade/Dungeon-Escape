@@ -120,7 +120,7 @@ rooms = {
 		"name" : "THE TICTACTOE CHAMBER",
 		"info" : "You are one step away from freedom. Behind the final gate there is a chamber with a big touch screen at its center."
 		" You have to play TicTacToe against an evil electronic brain. This match is about life or death. Type 'play' to begin. "
-		"My God be with you now...",
+		"May God be with you now...",
 		"look" : "You are one step away from freedom. Behind the final gate there is a chamber with a big touch screen at its center."
 		" You have to play TicTacToe against an evil electronic brain. This match is about life or death. Type 'play' to begin. "
 		"My God be with you now...",

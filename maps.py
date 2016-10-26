@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""
+The maps in the game are stored in a list called maps.
+The display of maps in the game is controlled by the global variable ROOMS_VISITED and several functions like roomInfo()
+"""
 maps = [0,1,2,3,4,5,6,7,8,9,10]
 maps[0] = """
            _________

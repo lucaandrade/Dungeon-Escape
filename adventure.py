@@ -3,9 +3,12 @@
 
 import sys
 import textwrap
+import json
+import os.path
 from rooms import rooms
 from items import items
 from maps import maps
+
 
 """
 GENERAL GLOBAL VARIABLES
@@ -13,8 +16,8 @@ GENERAL GLOBAL VARIABLES
 LOC = "your cell" # The initial location (room)
 INV = [] # The player inventory
 INVmax = 10 # Max number of items that can be stored in the inventory
-DIR = "" # Initializes the directions
-ITEM = "" # Handles an item when it is taken or dropped or looked at
+#DIR = "" # Initializes the directions
+#ITEM = "" # Handles an item when it is taken or dropped or looked at
 ROOMS_VISITED = [] # List with visited rooms
 
 """
@@ -55,6 +58,65 @@ def cheat():
 def gameOver(): # TODO: Write a text. Go to the main menu.
 	printw("GAME OVER")
 	sys.exit()
+
+def saveGameStatus():
+	printw("Saving game...\n")
+	inp = input("Type the save file name: ")
+	inp = inp.strip()
+	if ".json" not in inp[-5:]:
+		inp = inp + ".json"
+	gameStatus = {
+		"LOC" : LOC,
+		"INV" : INV,
+		"ROOMS_VISITED" : ROOMS_VISITED,
+		"CORPSE_BELT" : CORPSE_BELT,
+		"GUARD1_IS_ALIVE" : GUARD1_IS_ALIVE,
+		"DEAD_GUARD_HAS_UNIFORM" : DEAD_GUARD_HAS_UNIFORM,
+		"DEAD_GUARD_HAS_KEYS" : DEAD_GUARD_HAS_KEYS,
+		"LIGHTER_REVEALED" : LIGHTER_REVEALED,
+		"POUCH_REVEALED" : POUCH_REVEALED,
+		"BOX_ON_BUTTON" : BOX_ON_BUTTON,
+		"GUARDS_SLEEP" : GUARDS_SLEEP,
+		"BENCH_MOVED" : BENCH_MOVED,
+		"TORCH_REVEALED" : TORCH_REVEALED,
+		"TORCH_FIRE" : TORCH_FIRE,
+		"SPIKES_UP" : SPIKES_UP
+	}
+	jsonfile = open(inp, "w")
+	json.dump(gameStatus, jsonfile, indent=4)
+	printw("Game status saved to " + inp)
+
+def loadGameStatus():
+	global INV, LOC, ROOMS_VISITED, CORPSE_BELT, GUARD1_IS_ALIVE, DEAD_GUARD_HAS_UNIFORM, DEAD_GUARD_HAS_KEYS, LIGHTER_REVEALED
+	global POUCH_REVEALED, BOX_ON_BUTTON, GUARDS_SLEEP, BENCH_MOVED, TORCH_REVEALED, TORCH_FIRE, SPIKES_UP
+	printw("Loading game status...\n")
+	inp = input("Type the save file name: ")
+	inp = inp.strip()
+	if os.path.isfile(inp):
+		jsonfile = open(inp, "r")
+		jsonobject = json.load(jsonfile)
+		INV = jsonobject["INV"] 
+		LOC = jsonobject["LOC"]
+		ROOMS_VISITED = jsonobject["ROOMS_VISITED"]
+		CORPSE_BELT = jsonobject["CORPSE_BELT"]
+		GUARD1_IS_ALIVE = jsonobject["GUARD1_IS_ALIVE"]
+		DEAD_GUARD_HAS_UNIFORM = jsonobject["DEAD_GUARD_HAS_UNIFORM"]
+		DEAD_GUARD_HAS_KEYS = jsonobject["DEAD_GUARD_HAS_KEYS"]
+		LIGHTER_REVEALED = jsonobject["LIGHTER_REVEALED"]
+		POUCH_REVEALED = jsonobject["POUCH_REVEALED"]
+		BOX_ON_BUTTON = jsonobject["BOX_ON_BUTTON"]
+		GUARDS_SLEEP = jsonobject["GUARDS_SLEEP"]
+		BENCH_MOVED = jsonobject["BENCH_MOVED"]
+		TORCH_REVEALED = jsonobject["TORCH_REVEALED"]
+		TORCH_FIRE = jsonobject["TORCH_FIRE"]
+		SPIKES_UP = jsonobject["SPIKES_UP"]
+	else:
+		printw("File not found...")
+		return
+
+	roomInfo()
+	game()
+
 
 def roomInfo():
 	"""
@@ -402,7 +464,7 @@ def itemUse(arg):
 			if LOC == "guard room":
 				GUARDS_SLEEP = True
 				printw("You use the pouch. You open it carefully and pour the powders into the guards' beer jars"
-						" without them noticing it. After 5 minutes both guards fall i deep sleep.")
+						" without them noticing it. After 5 minutes both guards fall in deep sleep.")
 				return
 			else:
 				printw("You use the pouch. Nothing special happens.")
@@ -610,18 +672,54 @@ def gameQuit(): # TODO: save options
 def gameStart(): #TODO: develop this with more information
 	"""Game presentation. This function gets called only once, at the beginning""" 
 	print(chr(27) + "[2J" + chr(27) + "[;H") # Cleans the console
-	printw("***DUNGEON ESCAPE***")
-	printw("A game by Javier Martínez")
-	printw("Type --help to see the help menu.")
-	printw("Type quit to quit\n\n")
-	roomInfo()
-	game()
+	print(" .--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--.")
+	print("/ .. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \ ")
+	print("\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/ /")
+	print(" \/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /")
+	print(" / /\/ /`' /`' /`' /`' /`' /`' /`' /`' /`' /`' /`' /`' /`' /\/ /\ ")
+	print("/ /\ \/`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'\ \/\ \ ")
+	print("\ \/\ \                                                    /\ \/ /")
+	print(" \/ /\ \                                                  / /\/ /")
+	print(" / /\/ /                 DUNGEON ESCAPE                   \ \/ /\ ")
+	print("/ /\ \/                                                    \ \/\ \ ")
+	print("\ \/\ \               a text adventure game                /\ \/ /")
+	print(" \/ /\ \                                                  / /\/ /")
+	print(" / /\/ /               by Javier Martínez                 \ \/ /\ ")
+	print("/ /\ \/                                                    \ \/\ \ ")
+	print("\ \/\ \.--..--..--..--..--..--..--..--..--..--..--..--..--./\ \/ /")
+	print(" \/ /\/ ../ ../ ../ ../ ../ ../ ../ ../ ../ ../ ../ ../ ../ /\/ /")
+	print(" / /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\/ /\ ")
+	print("/ /\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \/\ \ ")
+	print("\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `' /")
+	print(" `--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'")
+
+	print("\n\n")
+	print("                       TYPE 1 TO BEGIN")
+	print("\n")
+	print("                  TYPE 2 TO LOAD GAME STATUS")
+	print("\n")
+	print("               TYPE --help TO SEE THE HELP MENU.")
+	print("\n")
+	while True:
+		inp = input("-->")
+		inp = inp.strip()
+		inp = inp.lower()
+		if inp == "1":
+			roomInfo()
+			game()
+		elif inp == "2":
+			loadGameStatus()
+		elif inp == "-h" or inp == "--help":
+			pass
+		else:
+			printw("Sorry, I didn't understand that. Please type --help to see the help menu.")
 
 def game():
 	while True:
 		printw("+++--+++--+++--+++--+++--+++--+++--+++--+++--+++--")
 		inp = input("\nWhat do you want to do?: -->")
 		inp = inp.strip()
+		inp = inp.lower()
 		inpList = inp.split(" ")
 		w1 = inpList[0] # This is the first word. This will be used as argument to call different functions later.
 		w2 = " ".join(inpList[1:])  # These are the following word(s). This will also be used as an argument.
@@ -687,6 +785,10 @@ def game():
 			roomHint(w1)
 		elif w1 == "n" or w1 =="north" or w1 == "s" or w1 == "south" or w1 == "e" or w1 == "east" or w1 == "w" or w1 == "west":
 			roomLeave(w1)
+		elif w1 == "save":
+			saveGameStatus()
+		elif w1 == "load":
+			loadGameStatus()
 		elif w1 == "q" or w1 == "quit":
 			gameQuit()
 		else:
