@@ -2,235 +2,238 @@
 # -*- coding: utf-8 -*-
 
 """
-The maps in the game are stored in a list called maps.
-The display of maps in the game is controlled by the global variable ROOMS_VISITED and several functions like roomInfo()
+PRINTS THE MAP AS THE PLAYER DISCOVERS NEW ROOMS
 """
-maps = [0,1,2,3,4,5,6,7,8,9,10]
-maps[0] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-          ^----D----^
-"""
-maps[1] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-|         |    o    |          |
-|         D    r    D          |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-"""
-maps[2] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-| western |    o    |          |
-|  cell   D    r    D          |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-"""
-maps[3] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-|         |    o    |  eastern |
-|         D    r    D   cell   |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-"""
-maps[4] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-| western |    o    |  eastern |
-|  cell   D    r    D   cell   |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-"""
-maps[5] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-| western |    o    |  eastern |
-|  cell   D    r    D   cell   |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-          |         |           
-          |  guard  |
-          |  room   D 
-          |         |
-          o----D----o           
-"""          
-maps[6] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-| western |    o    |  eastern |
-|  cell   D    r    D   cell   |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-          |         |           
-          |  guard  |----------o 
-          |  room   D darkness D   
-          |         |----------o                  
-          o----D----o           
-"""
-maps[7] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-| western |    o    |  eastern |
-|  cell   D    r    D   cell   |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-          |         |          
-          |  guard  |
-          |  room   D 
-          |         |
-          o----D----o           
-          |         |
-          |  south  | 
-          |  room   |
-          |         |
-          o---------o
-"""
-maps[8] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-| western |    o    |  eastern |
-|  cell   D    r    D   cell   |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-          |         |           
-          |  guard  |----------o  
-          |  room   D darkness D     
-          |         |----------o                  
-          o----D----o        
-          |         |
-          |  south  | 
-          |  room   |
-          |         |
-          o---------o
-"""
-maps[9] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-| western |    o    |  eastern |
-|  cell   D    r    D   cell   |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-          |         |           /^^¨^¨^¨^¨^¨^¨^¨^\
-          |  guard  |----------o                  \
-          |  room   D darkness D       yard        D  
-          |         |----------o                  /
-          o----D----o           \_.__.__.__._.__./
-          |         |
-          |  south  | 
-          |  room   |
-          |         |
-          o---------o
-"""
-maps[10] = """
-           _________
-          |         |
-          |  your   |
-          |  cell   | 
-          |         |
-o---------^----D----^----------o
-|         |    c    |          |
-| western |    o    |  eastern |
-|  cell   D    r    D   cell   |
-|         |    r    |          |
-o---------o    i    o----------o
-          |    d    |
-          |    o    |
-          |    r    |
-          o----D----o
-          |         |           /^^¨^¨^¨^¨^¨^¨^¨^\
-          |  guard  |----------o                  \
-          |  room   D darkness D       yard        D   __FREEDOM__
-          |         |----------o                  /
-          o----D----o           \_.__.__.__._.__./
-          |         |
-          |  south  | 
-          |  room   |
-          |         |
-          o---------o
-"""
+
+def map1():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("          ^----D----^")
+
+def map2():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("          ^----D----^")
+     print("          |    c    |")
+     print("          |    o    |")
+     print("          D    r    D")
+     print("          |    r    |")
+     print("          o    i    o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+
+
+def map3():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("o---------^----D----^")
+     print("|         |    c    |")
+     print("| western |    o    |")
+     print("|  cell   D    r    D")
+     print("|         |    r    |")
+     print("o---------o    i    o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+
+def map4():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("          ^----D----^----------o")
+     print("          |    c    |          |")
+     print("          |    o    |  eastern |")
+     print("          D    r    D   cell   |")
+     print("          |    r    |          |")
+     print("          o    i    o----------o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+
+def map5():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("o---------^----D----^----------o")
+     print("|         |    c    |          |")
+     print("| western |    o    |  eastern |")
+     print("|  cell   D    r    D   cell   |")
+     print("|         |    r    |          |")
+     print("o---------o    i    o----------o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+
+def map6():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("o---------^----D----^----------o")
+     print("|         |    c    |          |")
+     print("| western |    o    |  eastern |")
+     print("|  cell   D    r    D   cell   |")
+     print("|         |    r    |          |")
+     print("o---------o    i    o----------o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+     print("          |         |")
+     print("          |  guard  |")
+     print("          |  room   D")
+     print("          |         |")
+     print("          o----D----o")
+
+def map7():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("o---------^----D----^----------o")
+     print("|         |    c    |          |")
+     print("| western |    o    |  eastern |")
+     print("|  cell   D    r    D   cell   |")
+     print("|         |    r    |          |")
+     print("o---------o    i    o----------o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+     print("          |         |")
+     print("          |  guard  |----------o")
+     print("          |  room   D darkness D")
+     print("          |         |----------o")
+     print("          o----D----o ")
+ 
+
+def map8():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("o---------^----D----^----------o")
+     print("|         |    c    |          |")
+     print("| western |    o    |  eastern |")
+     print("|  cell   D    r    D   cell   |")
+     print("|         |    r    |          |")
+     print("o---------o    i    o----------o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+     print("          |         |")
+     print("          |  guard  |")
+     print("          |  room   D")
+     print("          |         |")
+     print("          o----D----o")
+     print("          |         |")
+     print("          |  south  | ")
+     print("          |  room   |")
+     print("          |         |")
+     print("          o---------o")
+
+def map9():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("o---------^----D----^----------o")
+     print("|         |    c    |          |")
+     print("| western |    o    |  eastern |")
+     print("|  cell   D    r    D   cell   |")
+     print("|         |    r    |          |")
+     print("o---------o    i    o----------o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+     print("          |         |")
+     print("          |  guard  |----------o ")
+     print("          |  room   D darkness D")
+     print("          |         |----------o")
+     print("          o----D----o")
+     print("          |         |")
+     print("          |  south  | ")
+     print("          |  room   |")
+     print("          |         |")
+     print("          o---------o")
+
+def map10():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("o---------^----D----^----------o")
+     print("|         |    c    |          |")
+     print("| western |    o    |  eastern |")
+     print("|  cell   D    r    D   cell   |")
+     print("|         |    r    |          |")
+     print("o---------o    i    o----------o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+     print("          |         |           /^^¨^¨^¨^¨^¨^¨^¨^\ ")
+     print("          |  guard  |----------o                  \ ")
+     print("          |  room   D darkness D       yard        D")
+     print("          |         |----------o                  /")
+     print("          o----D----o           \_.__.__.__._.__./")
+     print("          |         |")
+     print("          |  south  |")
+     print("          |  room   |")
+     print("          |         |")
+     print("          o---------o")
+
+def map11():
+     print("           _________")
+     print("          |         |")
+     print("          |  your   |")
+     print("          |  cell   |")
+     print("          |         |")
+     print("o---------^----D----^----------o")
+     print("|         |    c    |          |")
+     print("| western |    o    |  eastern |")
+     print("|  cell   D    r    D   cell   |")
+     print("|         |    r    |          |")
+     print("o---------o    i    o----------o")
+     print("          |    d    |")
+     print("          |    o    |")
+     print("          |    r    |")
+     print("          o----D----o")
+     print("          |         |           /^^¨^¨^¨^¨^¨^¨^¨^\ ")
+     print("          |  guard  |----------o                  \ ")
+     print("          |  room   D darkness D       yard        D  __FREEDOM__")
+     print("          |         |----------o                  /")
+     print("          o----D----o           \_.__.__.__._.__./")
+     print("          |         |")
+     print("          |  south  |")
+     print("          |  room   |")
+     print("          |         |")
+     print("          o---------o")
+
+
+

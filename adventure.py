@@ -5,12 +5,13 @@ import sys
 import textwrap
 import json
 import os.path
-from rooms import rooms as gRooms
-from items import items as gItems
-from maps import maps
+import rooms 
+import items 
+import maps
 
-rooms = gRooms
-items = gItems
+rooms = rooms.rooms
+items = items.items
+
 """
 GENERAL GLOBAL VARIABLES
 """
@@ -120,6 +121,47 @@ def loadGameStatus():
 	roomInfo()
 	game()
 
+def printMap():
+	if ROOMS_VISITED == ["your cell"]: 
+		maps.map1()
+	elif ROOMS_VISITED == ["your cell", "corridor"]: 
+		maps.map2()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell"]: 
+		maps.map3()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell"]: 
+		maps.map4()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell"]: 
+		maps.map5()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell"]: 
+		maps.map5()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room"]: 
+		maps.map6()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room"]: 
+		maps.map6()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room", "south room"]: 
+		maps.map8()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "south room"]: 
+		maps.map8()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room", "darkness"]: 
+		maps.map7()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "darkness"]: 
+		maps.map7()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room", "darkness", "south room"]: 
+		maps.map9()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room", "south room", "darkness"]: 
+		maps.map9()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "darkness", "south room"]: 
+		maps.map9()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "darkness", "south room"]: 
+		maps.map9()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "darkness", "south room", "the yard"]: 
+		maps.map10()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "south room", "darkness", "the yard"]: 
+		maps.map10()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room", "darkness", "south room", "the yard"]: 
+		maps.map10()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room", "south room", "darkness", "the yard"]: 
+		maps.map10()
 
 def roomInfo():
 	"""
@@ -130,17 +172,8 @@ def roomInfo():
 	if LOC not in ROOMS_VISITED:
 		ROOMS_VISITED.append(LOC)
 	print(chr(27) + "[2J" + chr(27) + "[;H") # Clears the console
-	if ROOMS_VISITED == ["your cell"]: 
-		print(maps[0])
-	elif ROOMS_VISITED == ["your cell", "corridor"]:
-		print(maps[1])
-	elif ROOMS_VISITED == ["your cell", "corridor", "western cell"]:
-		print(maps[2])
-	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell"]:
-		print(maps[3])
-	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell"] or ROOMS_VISITED == ["your cell", "corridor", "western cell","eastern cell"]:
-		print(maps[4])
-
+	printMap()
+	print("\n\n")
 	printw(rooms[LOC]["name"])
 	printw("=" * len(rooms[LOC]["name"]))
 	if DEAD_GUARD_HAS_UNIFORM == True:
