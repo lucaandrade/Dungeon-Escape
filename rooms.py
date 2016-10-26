@@ -41,7 +41,7 @@ rooms = {
 		" open cells, one to the west and one to the east. The gate to the south is locked.",
 		"exits" : ["north", "south", "east", "west"],
 		"doorOpen" : {"north" : [True, "your cell"], "south" : [False, "guard room"], "east" : [True, "eastern cell"], "west" : [True, "western cell"]},
-		"items" : ["dead guard", "box", "button", "uniform"],
+		"items" : ["dead guard", "box", "button", "uniform", "gate"],
 		"hint" : "You should look like a guard if you want to survive. Explore the cells in search of items. What can the box and the button do?",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
 	},
@@ -59,21 +59,22 @@ rooms = {
 		"name" : "THE EASTERN CELL",
 		"info" : "Another creepy dungeon cell. At least there are no dead bodies in here...",
 		"look" : "Dark and cold... There is a little wooden wardrobe attached to the wall.",
-		"exits" : ["east"],
+		"exits" : ["west"],
 		"doorOpen" : {"west" : [True, "corridor"]},
-		"items" : ["wardrobe"],
+		"items" : ["wardrobe", "pouch"],
 		"hint" : "Break that wardrobe!",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
 	},
 	"guard room" : {
 		"name" : "THE GUARDS' ROOM",
 		"info" : "You are at the guards' room.",
-		"look1" : "You see two guards playing cards and drinking beer in big jars. They believe you are one of them. "
+		"look" : "You see two guards playing cards and drinking beer in big jars. They believe you are one of them. "
 		"There is a bench blocking an exit to the south.",
 		"look2" : "The guards sleep deeply. There is a bench blocking an exit to the south.",
 		"look3" : "The guards sleep deeply. The bench no longer blocks the exit to the south.",
-		"doorOpen" : {"north" : [True, "corridor"], "south" : [False, "southern room"], "west" : [True, "darkness"]},
-		"items" : ["two guards", "beer jars", "bench"],
+		"exits" : ["north", "south", "east"],
+		"doorOpen" : {"north" : [True, "corridor"], "south" : [False, "south room"], "east" : [True, "darkness"]},
+		"items" : ["two guards", "beer jars", "bench", "wristband"],
 		"hint" : "What can those powders in the leather couch be used for? They might combine perfectly with the beers... "
 		"Have you tried to move the bench?",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
@@ -81,10 +82,11 @@ rooms = {
 	"south room" : {
 		"name" : "THE SOUTH ROOM",
 		"info" : "You are at the south room.",
-		"look1" : "The only remarkable thing about this room is a big wardrobe next to a wall.",
+		"look" : "The only remarkable thing about this room is a big wardrobe next to a wall.",
 		"look2" : "The only remarkable thing about this room is a big wardrobe next to a wall. There is a torch inside the wardrobe.",
+		"exits" : ["north"],
 		"doorOpen" : {"north" : [True, "guard room"]},
-		"items" : ["wardrobe", "torch"],
+		"items" : ["wardrobe south", "torch"],
 		"hint" : "Open the wardrobe and examine it. There is something important inside it.",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
 	},
@@ -92,11 +94,12 @@ rooms = {
 		"name" : "DARKNESS",
 		"info" : "You are now in darkness...",
 		"info1" : "The only light in the darkness is the flame that shines in a torch.",
-		"look1" : "The only thing your eyes manage to see is a kind of exit to the east ",
+		"look" : "The only thing your eyes manage to see is a kind of exit to the east ",
 		"look2" : "The shining flame of the torch lets you discover a spike trap installed in the center of the room. By the trap's side there is "
 		"a button on the floor.",
 		"look3" : "The trap has been deactivated. The spikes are down.",
-		"doorOpen" : {"east" : [True, "the yard"]},
+		"exits" : ["east", "west"],
+		"doorOpen" : {"west": [True, "guard room"], "east" : [True, "the yard"]},
 		"items" : ["spike trap", "button", "burning torch"],
 		"hint" : "Have you found a lighter? Do you have a torch? When you are able to see you will then need to kick something.",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
@@ -107,6 +110,7 @@ rooms = {
 		"look" : "At the end of the yard, to the east, you find the final gate. It is the gate to freedom. The gate has no keyhole,"
 		"but instead there is a kind of magnetic opening mechanism at its center, with a headless dragon body drawn in it. It seems "
 		"that the drawing must be completed with a head for the gate to open.",
+		"exits" : ["east", "west"],
 		"doorOpen" : {"west" : [True, "darkness"], "east" : [False, "TicTacToe"]},
 		"items" : ["final gate"],
 		"hint" : "Do you have anything in your inventory that has a dragon head drawn in it?",
