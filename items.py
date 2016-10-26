@@ -14,11 +14,11 @@ Each item in the dictionary is a dictionary itsfelf, containing the following:
 "kickable1-3": A list consisting on a boolean value (True: the item can be kicked) and the corresponding string that gets printed after it.
 """
 items = {
-	"corpse1" : {
+	"corpse" : {
 		"room" : "your cell",
 		"look1" : "A very rotten man's corpse. The corpse has a belt on.",
 		"look2" : "A very rotten man's corpse.",
-		"keywords" : ["corpse1", "corpse", "body", "dead", "cadaver", "rotten"],
+		"keywords" : ["corpse", "body", "dead", "cadaver", "rotten"],
 		"hidden" : False,
 		"takable1" : [False, "Taking a rotten corpse doesn't sound like a good idea."],
 		"movable1" : [True, "You move the corpse. Nothing special happens."],
@@ -43,12 +43,12 @@ items = {
 		"movable1" : [False, "You can't move a door!"],
 		"kickable1" : [True, "You kick the door. That hurts!"]
 		},
-	"guard1" : {
+	"guard" : {
 		"room" : ["your cell"],
 		"look1" : "An angry and nervous man in an ancient military uniform. Not friendly at all. He has a bunch of keys in his hand.",
 		"look2" : "A very dead guard, wearing a uniform. There is a bunch of keys in its hand.",
 		"look3" : "A very dead guard, wearing a uniform.",
-		"keywords" : ["guard1", "guard", "guardian", "sentinel"],
+		"keywords" : ["guard", "guardian", "sentinel"],
 		"hidden" : False,
 		"takable1" : [False, "Taking an angry guard will do no good..."],
 		"takable2" : [False, "Taking a dead body sounds disgusting..."],
@@ -100,7 +100,7 @@ items = {
 		},
 	"button": {
 		"room" : "corridor",
-		"look1" : "A metalic round button on the floor.",
+		"look1" : "A metalic round button on the floor. It needs to be pushed by something heavy.",
 		"keywords" : ["button", "round", "metalic"],
 		"hidden" : False,
 		"takable1" : [False, "You can't take the button."],
@@ -119,6 +119,7 @@ items = {
 	"dead body": {
 		"room" : "western cell",
 		"look1" : "A dead prisoner's body. It has signs of having being tortured. It has a lighter in a pocket.",
+		"look2" : "A dead prisoner's body. It has signs of having being tortured.",
 		"keywords" : ["dead body", "dead", "body", "corpse", "prisioner"],
 		"hidden" : False,
 		"takable1" : [False, "You can't take the body."],
@@ -155,7 +156,7 @@ items = {
 		},
 	"two guards": {
 		"room" : "guard room",
-		"look1" : "Two guards drinking beer and playing cards. They are drunk. They believe you are one of them.",
+		"look1" : "Two guards drinking beer and playing cards. They are drunk. They believe you are one of them. One of them wears a metalic wristband with a dragon head drawn on it.",
 		"look2" : "Two sleeping guards. One of them wears a metalic wristband with a dragon head drawn on it.",
 		"look3" : "Two sleeping guards.",
 		"keywords" : ["two guards", "guard", "guards", "sleeping", "guardian", "guardians", "sentinel", "sentinels"],
@@ -194,7 +195,7 @@ items = {
 		"hidden" : False,
 		"takable1" : [False, "You can't take the bench."],
 		"movable1" : [True, "You start moving the bench. The guards react to this and when they look at you they "
-		"realise that you are a prisioner. They the kill you."],
+		"realise that you are a prisioner. They then kill you."],
 		"movable2" : ["You move the bench so that it no longer blocks the exit to the south."],
 		"kickable1" : [True, "You kick the bench. It hurts..."]
 		},
@@ -223,7 +224,7 @@ items = {
 		"look1" : "A system of sharp spikes installed on the floor.",
 		"look2" : "A deactivated trap. Not dangerous anymore.",
 		"keywords" : ["spikes trap", "trap", "spike", "spikes"],
-		"hidden" : False,
+		"hidden" : True,
 		"takable1" : [True, "You try to take the spikes, but your body falls on them. You die."],
 		"takable2" : [False, "You can't take the trap."],
 		"movable1" : [True, "You try to move the spikes, but your body falls on them. You die."],
@@ -233,9 +234,9 @@ items = {
 		},
 	"trap button": {
 		"room" : "darkness",
-		"look1" : "A button the size of your foot. It should deactivate the spikes.",
+		"look1" : "A button the size of your foot. It is installed on the floor. It should deactivate the spikes.",
 		"keywords" : ["trap button", "button"],
-		"hidden" : False,
+		"hidden" : True,
 		"takable1" : [False, "You can't take the button."],
 		"movable1" : [False, "You can't move the button."],
 		"kickable1" : [True, "You kick the button to push it down. It deactivates the spikes trap."],

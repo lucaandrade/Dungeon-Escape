@@ -29,7 +29,7 @@ rooms = {
 		"look2" : "The cell has an intense smell of putrefaction. There is a door to the south. Behind it you can see the dead guard lying on the floor.",
 		"exits" : ["south"],
 		"doorOpen" : {"south" : [False, "corridor"]},
-		"items" : ["corpse1", "belt", "guard1", "keys", "uniform"],
+		"items" : ["corpse", "belt", "guard", "keys", "uniform"],
 		"hint" : "Look at the dead body. It might have something useful for you. The guard should be eliminated if you want to leave this cell.",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
 	},
@@ -95,12 +95,12 @@ rooms = {
 		"info" : "You are now in darkness...",
 		"info1" : "The only light in the darkness is the flame that shines in a torch.",
 		"look" : "The only thing your eyes manage to see is a kind of exit to the east ",
-		"look2" : "The shining flame of the torch lets you discover a spike trap installed in the center of the room. By the trap's side there is "
+		"look2" : "The shining flame of the torch reveals a spike trap installed in the center of the room. By the trap's side there is "
 		"a button on the floor.",
 		"look3" : "The trap has been deactivated. The spikes are down.",
 		"exits" : ["east", "west"],
 		"doorOpen" : {"west": [True, "guard room"], "east" : [True, "the yard"]},
-		"items" : ["spike trap", "button", "burning torch"],
+		"items" : ["spike trap", "trap button", "burning torch"],
 		"hint" : "Have you found a lighter? Do you have a torch? When you are able to see you will then need to kick something.",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
 	},
@@ -120,7 +120,7 @@ rooms = {
 		"name" : "THE TICTACTOE CHAMBER",
 		"info" : "You are one step away from freedom. Behind the final gate there is a chamber with a big touch screen at its center."
 		" You have to play TicTacToe against an evil electronic brain. This match is about life or death. Type 'play' to begin. "
-		"May God be with you now...",
+		"Ma y God be with you now...",
 		"look" : "You are one step away from freedom. Behind the final gate there is a chamber with a big touch screen at its center."
 		" You have to play TicTacToe against an evil electronic brain. This match is about life or death. Type 'play' to begin. "
 		"My God be with you now...",
