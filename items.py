@@ -135,15 +135,15 @@ items = {
 		"movable1" : [True, "You move the lighter. Nothing special happens..."],
 		"kickable1" : [True, "You kick the lighter. That is so absurd..."]
 		},
-	"wardrobe": {
+	"cupboard": {
 		"room" : "eastern cell",
-		"look1" : "A little wooden wardrobe. It is attached to the wall at a low height. It is locked.",
-		"look2" : "A broken wardrobe.",
-		"keywords" : ["wardrobe", "wooden", "furniture"],
+		"look1" : "A little wooden cupboard. It is attached to the wall at a low height. It is locked.",
+		"look2" : "A broken cupboard.",
+		"keywords" : ["cupboard", "wooden", "furniture"],
 		"hidden" : False,
-		"takable1" : [False, "You can't take the wardrobe. It is attached to the wall."],
-		"movable1" : [False, "You can't move the wardrobe. It is attached to the wall."],
-		"kickable1" : [True, "You kick the wardrobe until it tears apart. There is a leather pouch inside."]
+		"takable1" : [False, "You can't take the cupboard. It is attached to the wall."],
+		"movable1" : [False, "You can't move the cupboard. It is attached to the wall."],
+		"kickable1" : [True, "You kick the cupboard until it tears apart. There is a leather pouch inside."]
 		},
 	"pouch": {
 		"room" : "eastern cell",
@@ -199,11 +199,11 @@ items = {
 		"movable2" : ["You move the bench so that it no longer blocks the exit to the south."],
 		"kickable1" : [True, "You kick the bench. It hurts..."]
 		},
-	"wardrobe south": {
+	"wardrobe": {
 		"room" : "south room",
 		"look1" : "A robust wooden wardrobe. Its doors are closed.",
 		"look2" : "A robust wooden wardrobe. There is an unlit torch.",
-		"keywords" : ["wardrobe south", "wardrobe", "wooden", "furniture"],
+		"keywords" : ["wardrobe", "wooden", "furniture"],
 		"hidden" : False,
 		"takable1" : [False, "You can't take the wardrobe."],
 		"movable1" : [False, "You can't move the wardrobe."],

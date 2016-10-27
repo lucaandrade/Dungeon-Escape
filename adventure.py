@@ -8,6 +8,7 @@ import os.path
 import rooms 
 import items 
 import maps
+import tictactoe
 
 rooms = rooms.rooms
 items = items.items
@@ -122,6 +123,9 @@ def loadGameStatus():
 	game()
 
 def printMap():
+	"""
+	MapDisplay(madness)
+	"""
 	if ROOMS_VISITED == ["your cell"]: 
 		maps.map1()
 	elif ROOMS_VISITED == ["your cell", "corridor"]: 
@@ -152,7 +156,7 @@ def printMap():
 		maps.map9()
 	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "darkness", "south room"]: 
 		maps.map9()
-	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "darkness", "south room"]: 
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "south room", "darkness"]: 
 		maps.map9()
 	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room", "darkness", "south room", "the yard"]: 
 		maps.map10()
@@ -162,6 +166,18 @@ def printMap():
 		maps.map10()
 	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room", "south room", "darkness", "the yard"]: 
 		maps.map10()
+	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "guard room", "darkness"]:
+		maps12()
+	elif ROOMS_VISITED == ["your cell", "corridor", "guard room", "western cell", "darkness"]:
+		maps.maps12()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "guard room", "darkness", "south room"]:
+		maps.maps13()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "guard room", "south room", "darkness"]:
+		maps.maps13()
+	elif ROOMS_VISITED == ["your cell", "corridor", "guard room", "darkness", "south room"]:
+		maps.maps13()
+	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "guard room", "south room", "darkness"]:
+		maps.maps13()
 
 def roomInfo():
 	"""
@@ -181,6 +197,24 @@ def roomInfo():
 			printw("You enter in a room with two guards playing cards and drinking beer. When they see you they immediately grip you and then kill you.")
 			gameOver()
 	printw(rooms[LOC]["info"])
+
+	##### DEBUG #####
+	# print("\n\n")
+	# print("INV: ", INV)
+	# print("LOC: ", LOC)
+	# print("CORPSE_BELT: ", CORPSE_BELT)
+	# print("GUARD1_IS_ALIVE: ", GUARD1_IS_ALIVE)
+	# print("DEAD_GUARD_HAS_UNIFORM: ", DEAD_GUARD_HAS_UNIFORM)
+	# print("DEAD_GUARD_HAS_KEYS: ", DEAD_GUARD_HAS_KEYS)
+	# print("BOX_ON_BUTTON:", BOX_ON_BUTTON)
+	# print("GUARDS_SLEEP: ", GUARDS_SLEEP)
+	# print("TORCH_FIRE: ", TORCH_FIRE)
+	# print("Lighter hidden: ", items["lighter"]["hidden"])
+	# print("Pouch hidden: ", items["pouch"]["hidden"])
+	# print("Torch hidden: ", items["torch"]["hidden"])
+	# print("Trap button hidden: ", items["trap button"]["hidden"])
+	# print("Spikes trap hidden: ", items["spikes trap"]["hidden"])
+
 
 def printINV():
 	"""Prints a list with the items in the player's inventory"""
@@ -264,8 +298,8 @@ def keywordSearch(w2, func):
 
 def itemExamine(arg):
 	"""Implements the examine command"""
-	global INV, LOC, CORPSE_BELT, GUARD1_IS_ALIVE, DEAD_GUARD_HAS_KEYS, DEAD_GUARD_HAS_UNIFORM
-	global LIGHTER_REVEALED, POUCH_REVEALED, TORCH_REVEALED, TORCH_FIRE
+	# global INV, LOC, CORPSE_BELT, GUARD1_IS_ALIVE, DEAD_GUARD_HAS_KEYS, DEAD_GUARD_HAS_UNIFORM
+	# global LIGHTER_REVEALED, POUCH_REVEALED, TORCH_REVEALED, TORCH_FIRE
 	
 	if arg in INV: # Examine items that are in the inventory:
 		for item in items:
@@ -304,22 +338,23 @@ def itemExamine(arg):
 					return
 			else:
 				printw(items[arg]["look1"])
+				items["lighter"]["hidden"] = False
 				return
 		if LOC == "western cell" and arg == "lighter": #------------------------ LIGHTER ---------------------
-			if LIGHTER_REVEALED == True:
+			if items["lighter"]["hidden"] == False:
 				printw(items[arg]["look1"])
 				return
 			else:
 				printw("You can't see any lighter.")
-		if LOC == "eastern cell" and arg == "wardrobe":
-			if POUCH_REVEALED == False:
+		if LOC == "eastern cell" and arg == "cupboard":
+			if items["pouch"]["hidden"] == True:
 				printw(items[arg]["look1"])
 				return
 			else:
 				printw(items[arg]["look2"])
 				return
 		if LOC == "eastern cell" and arg == "pouch": #---------------------------- POUCH ----------------------
-			if POUCH_REVEALED == True:
+			if items["pouch"]["hidden"] == False:
 				printw(items[arg]["look1"])
 				return
 			else:
@@ -328,12 +363,12 @@ def itemExamine(arg):
 			if GUARDS_SLEEP == False:
 				printw(items[arg]["look1"])
 			else:
-				if "wristband" in INV:
-					printw(items[arg]["look3"])
-				else:
-					printw(items[arg]["look2"])
+				# if "wristband" in INV:
+				printw(items[arg]["look3"])
+				# else:
+				# 	printw(items[arg]["look2"])
 		if LOC == "south room" and arg == "torch": #----------------------------- TORCH ---------------------
-			if TORCH_REVEALED == True:
+			if items["torch"]["hidden"] == False:
 				printw(items[arg]["look1"])
 				return
 			else:
@@ -424,7 +459,7 @@ def itemTake(arg):
 				roomRemoveItem(arg)
 				return
 			elif LOC == "eastern cell" and arg == "pouch": #-------------------------POUCH in eastern cell-----------------
-				if POUCH_REVEALED == True:
+				if items["pouch"]["hidden"] == False:
 					printw(items[arg]["takable1"][1])
 					INV.append(arg)
 					roomRemoveItem(arg)
@@ -459,7 +494,7 @@ def itemTake(arg):
 						printw("The wristband is not here.")
 						return
 			elif LOC == "south room" and arg == "torch": #---------------------------TORCH in south room-------------------
-				if TORCH_REVEALED == True:
+				if items["torch"]["hidden"] == False:
 					printw(items[arg]["takable1"][1])
 					INV.append(arg)
 					roomRemoveItem(arg)
@@ -516,7 +551,6 @@ def itemUse(arg):
 						" The guard comes to you with an angry face. When he is near enough"
 						" you put the belt around his neck and strangle him to death."
 						" His dead body falls on the corridor's floor.")
-				return
 			else:
 				printw("You have already killed the guard.")
 				return
@@ -524,7 +558,10 @@ def itemUse(arg):
 			if "torch" in INV:
 				TORCH_FIRE = True
 				printw("You use the lighter and lit the torch. The torch's flame shines.")
-				return
+				items["trap button"]["hidden"] == False
+				items["spikes trap"]["hidden"] == False
+				rooms["darkness"]["items"].append("trap button")
+				rooms["darkness"]["items"].append("spikes trap")
 			else:
 				printw("You use the lighter. Nothing special happens...")
 				return
@@ -533,13 +570,12 @@ def itemUse(arg):
 				GUARDS_SLEEP = True
 				printw("You use the pouch. You open it carefully and pour the powders into the guards' beer jars"
 						" without them noticing it. After 5 minutes both guards fall in deep sleep.")
-				return
 			else:
 				printw("You use the pouch. Nothing special happens.")
+				return
 		elif arg == "torch": #---------------------------------TORCH--------------------------------------
 			if TORCH_FIRE == False:
 				printw("There is no point in using an unlit torch.")
-				return
 			else:
 				printw("You use the torch. Its flame shines.")
 				return
@@ -548,13 +584,11 @@ def itemUse(arg):
 				printw("You use the wristband. You place it on the gate so that the dragon's head connects to the"
 					" dragon's body. The final gate opens...")
 				rooms[LOC]["doorOpen"]["east"][0] = True
-				return
 			else:
 				printw("You use the wristband. Nothing special happens...")
 				return
 	else:
 		print("You can only use items that are in your inventory.")
-		return
 
 def itemMove(arg):
 	"""Implements the move command"""
@@ -592,15 +626,14 @@ def itemKick(arg):
 			else:
 				printw(items[arg]["kickable2"][1])
 				return
-		elif arg == "wardrobe":
-			if POUCH_REVEALED == True:
+		elif arg == "cupboard":
+			if items["pouch"]["hidden"] == False:
 				printw("You have already done this.")
 				return
 			else:
-				POUCH_REVEALED = True
+				items["pouch"]["hidden"] = False
 				printw(items[arg]["kickable1"][1])
 				rooms[LOC]["items"].append("pouch")
-				items["pouch"]["hidden"] = False
 				return
 		elif arg == "two guards":
 			if GUARDS_SLEEP == False:
@@ -615,6 +648,7 @@ def itemKick(arg):
 				gameOver()
 			else:
 				printw(items[arg]["kickable2"][1])
+				roomRemoveItem(arg)
 				return
 		elif arg == "trap button":
 			if SPIKES_UP == True:
@@ -659,8 +693,8 @@ def itemOpen(arg):
 					printw("The gate to the south is locked.")
 				else:
 					printw("The gate to the south is open.")
-		elif LOC == "eastern cell" and arg == "wardrobe": #### eastern cell: open wardrobe ######
-			printw("The wardrobe is locked. You will have to open it some other way...")
+		elif LOC == "eastern cell" and arg == "cupboard": #### eastern cell: open cupboard ######
+			printw("The cupboard is locked. You will have to open it some other way...")
 			return
 		elif LOC == "eastern cell" and arg == "pouch": ###### eastern cell: open pouch ##########
 			if arg in INV:
@@ -669,12 +703,12 @@ def itemOpen(arg):
 			else:
 				printw("You must take the pouch first...")
 				return
-		elif LOC == "south room" and arg == "wardrobe south": ####### south room: wardrobe #########
-			if TORCH_REVEALED == True:
+		elif LOC == "south room" and arg == "wardrobe": ####### south room: wardrobe #########
+			if items["torch"]["hidden"] == False:
 				printw("The wardrobe is already open")
 				return
 			else:
-				TORCH_REVEALED = True
+				items["torch"]["hidden"] = False
 				printw("You open the wardrobe. There is a torch inside it.")
 				return
 		else:
@@ -688,9 +722,11 @@ def itemOpen(arg):
 def roomPrintExits():
 	global LOC
 	printw("There are exits to these directions:")
+	cc = -1
 	for exit in rooms[LOC]["exits"]:
-		printw('\n'.join(rooms[LOC]["exits"]))
-		return
+		cc += 1
+		print("> " + rooms[LOC]["exits"][cc])
+		
 	
 
 def roomLeave(w1):
@@ -734,7 +770,7 @@ def roomObjects():
 	for i in rooms[LOC]["items"]:
 		if i in items:
 			if items[i]["hidden"] == False:
-				printw("-" +  items[i]["keywords"][0])
+				printw("> " +  items[i]["keywords"][0])
 		
 def roomHint(w1):
 	global LOC
@@ -789,10 +825,28 @@ def gameStart(): #TODO: develop this with more information
 		else:
 			printw("Sorry, I didn't understand that. Please type --help to see the help menu.")
 
+def playerWins():
+	"""When the player wins!"""
+	print(chr(27) + "[2J" + chr(27) + "[;H") # Clears the console
+	print("\n")
+	print("X", "|", "X", "|", "X")
+	print("---------") 
+	print("X", "|", "X", "|", "X")
+	print("---------") 
+	print("X", "|", "X", "|", "X")
+	print("---------") 
+	print("\n\n") 
+	printw("The TicTacToe chamber opens in half...")
+	printw("You are free now!")
+	printw("RUN BEFORE THE GUARDS AWAKE!")
+	print("\n")
+	printw("Thank you for playing!")
+	sys.exit()
+
 def game():
 	while True:
 		printw("+++--+++--+++--+++--+++--+++--+++--+++--+++--+++--")
-		inp = input("\nWhat do you want to do?: -->")
+		inp = input("\nWhat do you want to do?:\n>>  ")
 		inp = inp.strip()
 		inp = inp.lower()
 		inpList = inp.split(" ")
@@ -866,8 +920,13 @@ def game():
 			loadGameStatus()
 		elif w1 == "q" or w1 == "quit":
 			gameQuit()
+		elif LOC == "TicTacToe" and w1 == "play":
+			tictactoe.tictactoe()
 		else:
 			printw("Sorry, I didn't understand that. Please type --help to see the help menu.")
+
+
+
 
 # def parseOptions():
 # 	global LOC, DIR, ITEM

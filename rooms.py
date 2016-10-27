@@ -58,11 +58,11 @@ rooms = {
 	"eastern cell" : {
 		"name" : "THE EASTERN CELL",
 		"info" : "Another creepy dungeon cell. At least there are no dead bodies in here...",
-		"look" : "Dark and cold... There is a little wooden wardrobe attached to the wall.",
+		"look" : "Dark and cold... There is a little wooden cupboard attached to the wall.",
 		"exits" : ["west"],
 		"doorOpen" : {"west" : [True, "corridor"]},
-		"items" : ["wardrobe", "pouch"],
-		"hint" : "Break that wardrobe!",
+		"items" : ["cupboard"],
+		"hint" : "Kick that cupboard!",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
 	},
 	"guard room" : {
@@ -75,7 +75,7 @@ rooms = {
 		"exits" : ["north", "south", "east"],
 		"doorOpen" : {"north" : [True, "corridor"], "south" : [False, "south room"], "east" : [True, "darkness"]},
 		"items" : ["two guards", "beer jars", "bench", "wristband"],
-		"hint" : "What can those powders in the leather couch be used for? They might combine perfectly with the beers... "
+		"hint" : "What can those powders in the pouch be used for? They might combine perfectly with the beers... "
 		"Have you tried to move the bench?",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
 	},
@@ -86,7 +86,7 @@ rooms = {
 		"look2" : "The only remarkable thing about this room is a big wardrobe next to a wall. There is a torch inside the wardrobe.",
 		"exits" : ["north"],
 		"doorOpen" : {"north" : [True, "guard room"]},
-		"items" : ["wardrobe south", "torch"],
+		"items" : ["wardrobe", "torch"],
 		"hint" : "Open the wardrobe and examine it. There is something important inside it.",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
 	},
@@ -100,7 +100,7 @@ rooms = {
 		"look3" : "The trap has been deactivated. The spikes are down.",
 		"exits" : ["east", "west"],
 		"doorOpen" : {"west": [True, "guard room"], "east" : [True, "the yard"]},
-		"items" : ["spike trap", "trap button", "burning torch"],
+		"items" : [],
 		"hint" : "Have you found a lighter? Do you have a torch? When you are able to see you will then need to kick something.",
 		"help" : "You can use these commands in this room: look / objects / take / , TODO"
 	},
@@ -123,7 +123,7 @@ rooms = {
 		"Ma y God be with you now...",
 		"look" : "You are one step away from freedom. Behind the final gate there is a chamber with a big touch screen at its center."
 		" You have to play TicTacToe against an evil electronic brain. This match is about life or death. Type 'play' to begin. "
-		"My God be with you now...",
+		"May God be with you now...",
 		"doorOpen" : {},
 		"items" : ["TicTacToe device"],
 		"hint" : "Google the TicTacToe rules if you don't know how to play.",
