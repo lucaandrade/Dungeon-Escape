@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import getopt
 import textwrap
 import json
 import os.path
@@ -24,18 +25,31 @@ INVmax = 10 # Max number of items that can be stored in the inventory
 ROOMS_VISITED = [] # List with visited rooms
 
 """
+GLOBAL VARIABLES TO STORE CHANGES IN THE ROOMS ITEMS LIST
+(we will use the to save and load game status)
+"""
+yourCell_items = []
+corridor_items = []
+westernCell_items = []
+easternCell_items = []
+guardRoom_items = []
+southRoom_items = []
+darkness_items = []
+theYard_items = []
+
+"""
 GAME HISTORY SPECIFIC GLOBAL VARIABLES:
 """
 CORPSE_BELT = True # True if the corpse wears the belt
 GUARD1_IS_ALIVE = True # True if guard is alive
 DEAD_GUARD_HAS_UNIFORM = True # True if the dead guard still wears the uniform
 DEAD_GUARD_HAS_KEYS = True # True if the dead guard has the bunch of keys
-LIGHTER_REVEALED = False # True if the player discovers the lighter
-POUCH_REVEALED = False # True if the player discovers the pouch
+#LIGHTER_REVEALED = False # True if the player discovers the lighter
+#POUCH_REVEALED = False # True if the player discovers the pouch
 BOX_ON_BUTTON = False # True if the box in the corridor is moved 
 GUARDS_SLEEP = False # True if the pouch is used in the guards' room
 BENCH_MOVED = False # True if the bench in the guards' room is moved
-TORCH_REVEALED = False # True if the player discovers the torch
+#TORCH_REVEALED = False # True if the player discovers the torch
 TORCH_FIRE = False # True if torch is in the inventory and lighter is in the inventory and lighter is used
 SPIKES_UP = True # False if the button in darkness is pressed
 
@@ -46,30 +60,156 @@ def printw(txt):
 	print(textwrap.fill(txt, 50))
 
 def help():
-	print("THIS IS THE HELP DISPLAY. IT IS HIDDEN IN help()")
+	"""Displays the help options help menu"""
+	print("\n")
+	print("DUNGEON ESCAPE - HELP MENU")
+	print("=" * len(("DUNGEON ESCAPE - HELP MENU")))
+	print("Type no options to start the game or...")
+	print("You can type one of the following options:\n")
+	print("   -h, --help:      Prints this help menu")
+	print("   -i, --info:      Prints information about this game and the idea behind it")
+	print("   -a, --about:     Prints information about me, the creator of this game")
+	print("   -v, --version:   Prints the latest version")
+	print("   -c, --cheat:     Prints an instruction, step by step, to win the game")
+
 
 def info():
-	print("THIS IS THE INFO. IT IS IN info()")
+	print("\n")
+	print("DUNGEON ESCAPE - GAME INFO")
+	print("=" * len("DUNGEON ESCAPE - GAME INFO"))
+	printw("This is a game about escaping from a dungeon without getting killed.")
+	printw("You begin in a dungeon cell. The door is locked. There is a guard in the corridor."
+	 		" What can you do?")
+	printw("Use commands such us 'examine', 'look', 'take' or 'use' in order to solve the problems "
+			"and get to the next room. Your price is freedom...")
+	print("\n")
+	printw("This is my first text adventure game. I made it as a final project in a course on Python "
+		"programming at Blekinge Institute of Technology (BTH) in Sweden.")
+	printw("To develope this game I took much inspiration from the game 'Jabato', a classic Spanish "
+		"text adventure game by Aventuras AD (1989). I think that a prison escape was a perfect topic "
+		"for a text adventure game.")
 
 def version():
-	print("THIS IS THE VERSION. IN version()")
+	print("\n")
+	print("DUNGEON ESCAPE - Version 1.0")
 
 def about():
-	print("THIS IS ABOUT ME. about()")
+	print("\n")
+	print("DUNGEON ESCAPE - ABOUT ME")
+	print("=" * len("DUNGEON ESCAPE - ABOUT ME"))
+	printw("My name is Javier Martinez and I am learning the basics of programming.")
+	printw("Besides programming and making games I like music (metal, rock, jazz, classic), "
+		"films, books and hamburgers.")
 
 def cheat():
-	print("THIS IS A GENERAL CHEAT. IT CONCERNS THE GAME IN GENERAL")
+	print("\n")
+	print("DUNGEON ESCAPE - CHEAT")
+	print ("=" * len("DUNGEON ESCAPE - CHEAT"))
+	print("So you want to know how to get to end of the dungeon alive?\nOk, I will expose the shortest way:\n")
+	print("Room 1: Your cell")
+	print("=" * len("Room 1: Your cell"))
+	print(">>take belt   ... ... Take the belt from the corpse")
+	print(">>use belt    ... ... Kill the guard by strangling him to death")
+	print(">>take keys   ... ... Take the keys from the dead guard")
+	print(">>open door   ... ... Open the door of your cell")
+	print(">>south       ... ... Go south to the next room: The corridor")
+	print("\n")
+	print("Room 2: The corridor")
+	print("=" * len("Room 2: The corridor"))
+	print(">>take uniform... ... Take the dead guard's uniform and put it on")
+	print(">>move box    ... ... Move the box and place it on the button. The gate to the south opens")
+	print(">>west        ... ... Go west to the next room: Western cell")
+	print("\n")
+	print("Room 3: Western cell")
+	print("=" * len("Room 3: Western cell"))
+	print(">>take lighter... ... Take the lighter from inside the dead body's pocket")
+	print(">>east        ... ... Go east to the next room: The corridor (again)")
+	print(">>east        ... ... Go east to the next room: Eastern cell")
+	print("\n")
+	print("Room 4: Eastern cell")
+	print("=" * len("Room 4: Eastern cell"))
+	print(">>kick cupboard.. ... Kick the cupboard to break it")
+	print(">>take pouch  ... ... Take the pouch")
+	print(">>west        ... ... Go west to the next room: The corridor (again)")
+	print(">>south       ... ... Go south to the next room: Guard room")
+	print("\n")
+	print("Room 5: Guard room")
+	print("=" * len("Room 5: Guard room"))
+	print(">>use pouch   ... ... Pour the powders into the guards' beer jars so that they fall asleep")
+	print(">>take wristband. ... Take the wristband from one of the guards")
+	print(">>move bench  ... ... Move the bench to unlock the exit to the south")
+	print(">>south       ... ... Go south to the next room: South room")
+	print("\n")
+	print("Room 6: South room")
+	print("=" * len("Room 6: South room"))
+	print(">>open wardrobe.. ... Open the wardrobe")
+	print(">>take torch  ... ... Take the torch")
+	print(">>north       ... ... Go north to the next room: Guard room (again)")
+	print(">>east        ... ... Go east to the next room: Darkness")
+	print("\n")
+	print("Room 7: Darkness")
+	print("=" * len("Room 7: Darkness"))
+	print(">>use lighter ... ... Use the lighter to lit the torch so that you can see")
+	print(">>kick button ... ... Kick the trap button to deactivate the spikes trap")
+	print(">>east        ... ... Go east to the next room: The yard")
+	print("\n")
+	print("Room 8: The yard")
+	print("=" * len("Room 8: The yard"))
+	print(">>use wristband.. ... Use the wristband to open the Final Gate")
+	print(">>east        ... ... Go east to the next room: The TicTacToe chamber")
+	print("\n")
+	print("Room 9: The TicTacToe chamber")
+	print("=" * len("Room 9: The TicTacToe chamber"))
+	print("Type a number from 0 to 8 to select a spot. If you win you are free!")
+
 
 def gameOver(): # TODO: Write a text. Go to the main menu.
-	printw("GAME OVER")
-	sys.exit()
+	print("\n--++--+-+--++-+--+..GAME OVER..+--+-++--+-+--++--\n")
+	printw("Type 1 to go back to the start menu. Type 2 to quit the game.")
+	inp = input(">")
+	inp = inp.strip()
+	inp = inp.lower()
+	if inp == "1":
+		gameStart()
+	if inp == "2":
+		printw("Thank you for playing!\n\n\n")
+		sys.exit(0)
+	
 
 def saveGameStatus():
+	global yourCell_items, corridor_items, westernCell_items, easternCell_items, guardRoom_items, southRoom_items, darkness_items, theYard_items
 	printw("Saving game...\n")
 	inp = input("Type the save file name: ")
 	inp = inp.strip()
 	if ".json" not in inp[-5:]:
 		inp = inp + ".json"
+	
+
+	for i in rooms["your cell"]["items"]:
+		yourCell_items.append(i)
+	for item in rooms["corridor"]["items"]:
+		corridor_items.append(item)
+	for item in rooms["western cell"]["items"]:
+		westernCell_items.append(item)
+	for item in rooms["eastern cell"]["items"]:
+		easternCell_items.append(item)
+	for item in rooms["guard room"]["items"]:
+		guardRoom_items.append(item)
+	for item in rooms["south room"]["items"]:
+		southRoom_items.append(item)
+	for item in rooms["darkness"]["items"]:
+		darkness_items.append(item)
+	for item in rooms["the yard"]["items"]:
+		theYard_items.append(item)
+	print(yourCell_items)
+	print(corridor_items)
+	print(westernCell_items)
+	print(easternCell_items)
+	print(guardRoom_items)
+	print(southRoom_items)
+	print(darkness_items)
+	print(theYard_items)
+	
 	gameStatus = {
 		"LOC" : LOC,
 		"INV" : INV,
@@ -78,22 +218,31 @@ def saveGameStatus():
 		"GUARD1_IS_ALIVE" : GUARD1_IS_ALIVE,
 		"DEAD_GUARD_HAS_UNIFORM" : DEAD_GUARD_HAS_UNIFORM,
 		"DEAD_GUARD_HAS_KEYS" : DEAD_GUARD_HAS_KEYS,
-		"LIGHTER_REVEALED" : LIGHTER_REVEALED,
-		"POUCH_REVEALED" : POUCH_REVEALED,
+		"LIGHTER_HIDDEN" : items["lighter"]["hidden"],
+		"POUCH_HIDDEN" : items["pouch"]["hidden"],
 		"BOX_ON_BUTTON" : BOX_ON_BUTTON,
 		"GUARDS_SLEEP" : GUARDS_SLEEP,
 		"BENCH_MOVED" : BENCH_MOVED,
-		"TORCH_REVEALED" : TORCH_REVEALED,
+		"TORCH_HIDDEN" : items["torch"]["hidden"],
 		"TORCH_FIRE" : TORCH_FIRE,
-		"SPIKES_UP" : SPIKES_UP
+		"SPIKES_UP" : SPIKES_UP,
+		"YOUR CELL ITEMS" : yourCell_items,
+		"CORRIDOR ITEMS" : corridor_items,
+		"WESTERN CELL ITEMS" : westernCell_items,
+		"EASTERN CELL ITEMS" : easternCell_items,
+		"GUARD ROOM ITEMS" : guardRoom_items,
+		"SOUTH ROOM ITEMS" : southRoom_items,
+		"DARKNESS ITEMS" : darkness_items,
+		"THE YARD ITEMS" : theYard_items
 	}
 	jsonfile = open(inp, "w")
 	json.dump(gameStatus, jsonfile, indent=4)
 	printw("Game status saved to " + inp)
 
 def loadGameStatus():
-	global INV, LOC, ROOMS_VISITED, CORPSE_BELT, GUARD1_IS_ALIVE, DEAD_GUARD_HAS_UNIFORM, DEAD_GUARD_HAS_KEYS, LIGHTER_REVEALED
-	global POUCH_REVEALED, BOX_ON_BUTTON, GUARDS_SLEEP, BENCH_MOVED, TORCH_REVEALED, TORCH_FIRE, SPIKES_UP
+	global INV, LOC, ROOMS_VISITED, CORPSE_BELT, GUARD1_IS_ALIVE, DEAD_GUARD_HAS_UNIFORM, DEAD_GUARD_HAS_KEYS
+	global BOX_ON_BUTTON, GUARDS_SLEEP, BENCH_MOVED, TORCH_FIRE, SPIKES_UP
+	global yourCell_items, corridor_items, westernCell_items, easternCell_items, guardRoom_items, southRoom_items, darkness_items, theYard_items
 	printw("Loading game status...\n")
 	inp = input("Type the save file name: ")
 	inp = inp.strip()
@@ -107,14 +256,16 @@ def loadGameStatus():
 		GUARD1_IS_ALIVE = jsonobject["GUARD1_IS_ALIVE"]
 		DEAD_GUARD_HAS_UNIFORM = jsonobject["DEAD_GUARD_HAS_UNIFORM"]
 		DEAD_GUARD_HAS_KEYS = jsonobject["DEAD_GUARD_HAS_KEYS"]
-		LIGHTER_REVEALED = jsonobject["LIGHTER_REVEALED"]
-		POUCH_REVEALED = jsonobject["POUCH_REVEALED"]
+		items["lighter"]["hidden"] = jsonobject["LIGHTER_HIDDEN"]
+		items["pouch"]["hidden"] = jsonobject["POUCH_HIDDEN"]
 		BOX_ON_BUTTON = jsonobject["BOX_ON_BUTTON"]
 		GUARDS_SLEEP = jsonobject["GUARDS_SLEEP"]
 		BENCH_MOVED = jsonobject["BENCH_MOVED"]
-		TORCH_REVEALED = jsonobject["TORCH_REVEALED"]
+		items["torch"]["hidden"] = jsonobject["TORCH_HIDDEN"]
 		TORCH_FIRE = jsonobject["TORCH_FIRE"]
 		SPIKES_UP = jsonobject["SPIKES_UP"]
+		rooms["your cell"]["items"] = jsonobject["YOUR CELL ITEMS"]
+		rooms["corridor"]["items"] = jsonobject["CORRIDOR ITEMS"]
 	else:
 		printw("File not found...")
 		return
@@ -188,6 +339,7 @@ def roomInfo():
 	if LOC not in ROOMS_VISITED:
 		ROOMS_VISITED.append(LOC)
 	print(chr(27) + "[2J" + chr(27) + "[;H") # Clears the console
+	print("ITEMS", yourCell_items)
 	printMap()
 	print("\n\n")
 	printw(rooms[LOC]["name"])
@@ -547,10 +699,10 @@ def itemUse(arg):
 		elif LOC == "your cell" and arg == "belt": #--------------------------BELT--------------------
 			if GUARD1_IS_ALIVE == True:
 				GUARD1_IS_ALIVE = False
-				printw("You call the guard while you hide the belt behind your back."
-						" The guard comes to you with an angry face. When he is near enough"
-						" you put the belt around his neck and strangle him to death."
-						" His dead body falls on the corridor's floor.")
+				printw("You call the guard. He comes to you with an angry face." 
+						" When he is near enough, you put the belt around his neck and strangle"
+						" him to death. His dead body falls on the corridor's floor."
+						)
 			else:
 				printw("You have already killed the guard.")
 				return
@@ -616,7 +768,7 @@ def itemMove(arg):
 
 def itemKick(arg):
 	"""Implements the kick command"""
-	print("You are in itemKick()")
+	print("\n")
 	global LOC, GUARD1_IS_ALIVE, POUCH_REVEALED, SPIKES_UP
 	if arg in rooms[LOC]["items"]: # If the item is in the room
 		if arg == "guard":
@@ -926,59 +1078,39 @@ def game():
 			printw("Sorry, I didn't understand that. Please type --help to see the help menu.")
 
 
-
-
-# def parseOptions():
-# 	global LOC, DIR, ITEM
-# 	try:
-# 		opts, args = getopt.getopt(sys.argv[1:], 'hivac', [
-# 			"help",
-# 			"info",
-# 			"version",
-# 			"about",
-# 			"cheat"
-# 			])
-# 		for opt, arg in opts:
-# 			if opt in ("-h", "--help"):
-# 				help()
-# 			elif opt in ("-i", "--info"):
-# 				info()
-# 			elif opt in ("-v", "--version"):
-# 				version()
-# 			elif opt in ("-a", "--about"):
-# 				about()
-# 			elif opt in ("-c", "--cheat"):
-# 				cheat()
-# 			else:
-# 				print("Sorry... That is not a valid option.")
-# 	except getopt.GetoptError:
-# 		print("Sorry... That is not a valid option.")
-# 		print("Please, type --help to see the help menu.")
+def parseOptions():
+	"""Handles option input in the console"""
+	global LOC, DIR, ITEM
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], 'hivac', [
+			"help",
+			"info",
+			"version",
+			"about",
+			"cheat",
+			])
+		for opt, arg in opts:
+			if opt in ("-h", "--help"):
+				help()
+				sys.exit(0)
+			elif opt in ("-i", "--info"):
+				info()
+				sys.exit(0)
+			elif opt in ("-v", "--version"):
+				version()
+				sys.exit(0)
+			elif opt in ("-a", "--about"):
+				about()
+				sys.exit(0)
+			elif opt in ("-c", "--cheat"):
+				cheat()
+				sys.exit(0)
+	except getopt.GetoptError:
+		print("Sorry... That is not a valid option.")
+		print("Please, type --help to see the help menu.")
+		sys.exit(1)
+	gameStart()
 	
-# 	for arg in args:	
-# 		if args[0] == "info" or args[0] == "i": # INFO
-# 			roomInfo(LOC)
-# 		elif args[0] == "look" or args[0] == "l": # LOOK
-# 			roomLook(LOC)
-# 		elif args[0] == "examine" or args[0] == "ex" or args[0] == "inspect": # EXAMINE
-# 			if len(args) > 1:
-# 				itemExamine(LOC, args[1])
-# 			else:
-# 				printw("What?")
-# 		elif args[0] == "exit" or args[0] == "exits": # EXITS
-# 			roomExits(LOC)
-# 		elif args[0] in ["north", "n", "south", "s", "east", "e", "west", "w"]: # N S W E
-# 			roomDirections(LOC, args[0])
-# 		elif args[0] == "take" or args[0] == "t": # TAKE
-# 			if len(args) > 1:
-# 				itemTake(LOC, args[1])
-# 			else:
-# 				printw("What?")
-# 		elif args[0] == "object" or args[0] == "objects" or args[0] == "o": # OBJECTS (list objects in the room)
-# 			roomObjects(LOC)
-# 		else:
-# 			printw("Sorry... I didn't understand that. Please, type --help to see the help menu.")
-		
 
 if __name__ == '__main__':
-	gameStart()
+	parseOptions()
