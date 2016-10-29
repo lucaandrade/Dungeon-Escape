@@ -150,7 +150,7 @@ rooms = {
         "name" : "FREEDOM!",
         "info" : "After winning the TicTacToe game, the chamber opened... You are free!",
         "look" : "You see the sunlight. You hear the birds...",
-        "exits" : "There are no exits. You are free now!",
+        "exits" : "",
         "items" : [],
         "hint" : "Type quit to exit the game",
         "help" : "You can use these commands: help, quit"
