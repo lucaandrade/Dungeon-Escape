@@ -332,6 +332,7 @@ def roomInfo():
 	print(chr(27) + "[2J" + chr(27) + "[;H") # Clears the console
 	printMap()
 	print("\n\n")
+	print(SPIKES_UP)
 	printw(rooms[LOC]["name"])
 	printw("=" * len(rooms[LOC]["name"]))
 	if DEAD_GUARD_HAS_UNIFORM == True:
@@ -687,10 +688,8 @@ def itemUse(arg):
 			if "torch" in INV:
 				TORCH_FIRE = True
 				printw("You use the lighter and lit the torch. The torch's flame shines.")
-				items["trap button"]["hidden"] == False
-				items["spikes trap"]["hidden"] == False
-				rooms[LOC]["items"].append("trap button")
-				rooms[LOC]["items"].append("spikes trap")
+				items["trap button"]["hidden"] = False
+				items["spikes trap"]["hidden"] = False
 			else:
 				printw("You use the lighter. Nothing special happens...")
 				return
@@ -879,7 +878,7 @@ def roomLeave(w1):
 
 	if DIR in rooms[LOC]["exits"]:
 		if rooms[LOC]["doorOpen"][DIR][0] == True:
-			if LOC == "darkness" and TORCH_FIRE == False:
+			if LOC == "darkness" and SPIKES_UP == True:
 				printw("You try to get to the exit. You suddenly step on a spikes trap installed on the ground"
 					" and your body falls on it. You die...")
 				gameOver()
@@ -1079,7 +1078,7 @@ def game():
 		elif LOC == "TicTacToe" and w1 == "play":
 			tictactoe.gameStart()
 		else:
-			printw("Sorry, I didn't understand that. Please type --help to see the help menu.")
+			printw("Sorry, I didn't understand that. Please type help to see the help menu.")
 
 
 def parseOptions():
