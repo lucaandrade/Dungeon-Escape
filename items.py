@@ -16,8 +16,8 @@ Each item in the dictionary is a dictionary itsfelf, containing the following:
 items = {
 	"corpse" : {
 		"room" : "your cell",
-		"look1" : "A very rotten man's corpse. The corpse has a belt on.",
-		"look2" : "A very rotten man's corpse.",
+		"look1" : "A rotten man's corpse. The corpse wears a belt.",
+		"look2" : "A rotten man's corpse.",
 		"keywords" : ["corpse", "body", "dead", "cadaver", "rotten"],
 		"hidden" : False,
 		"takable1" : [False, "Taking a rotten corpse doesn't sound like a good idea."],
@@ -26,8 +26,8 @@ items = {
 		},
 	"belt" : {
 		"room" : "your cell",
-		"look1" : "A leather belt. Hard and robust.",
-		"takable1" : [True, "Without any consideration to the dead body, you take the belt and hide it behind your back."],
+		"look1" : "A leather belt. Hard and robust. Perfect for strangling guards.",
+		"takable1" : [True, "You take the belt and hide it behind your back."],
 		"keywords" : ["belt"],
 		"hidden" : False,
 		"movable1" : [True, "That is absurd."],
@@ -45,9 +45,9 @@ items = {
 		},
 	"guard" : {
 		"room" : ["your cell"],
-		"look1" : "An angry and nervous man in an ancient military uniform. Not friendly at all. He has a bunch of keys in his hand.",
-		"look2" : "A very dead guard, wearing a uniform. There is a bunch of keys in its hand.",
-		"look3" : "A very dead guard, wearing a uniform.",
+		"look1" : "He is in the corridor. An angry man in uniform. He has a bunch of keys in his hand.",
+		"look2" : "A dead guard, wearing a uniform. There is a bunch of keys in its hand.",
+		"look3" : "A dead guard, wearing a uniform.",
 		"keywords" : ["guard", "guardian", "sentinel"],
 		"hidden" : False,
 		"takable1" : [False, "Taking an angry guard will do no good..."],
@@ -62,16 +62,15 @@ items = {
 		"look1" : "A bunch keys. These keys should open the dungeon cells.",
 		"keywords" : ["keys", "key", "bunch"],
 		"hidden" : False,
-		"takable1" : [True, "You try to catch the guard's keys with your hands. The guard immediately starts shouting loud and two other guards"
-		" come to help him. They then kill you."],
+		"takable1" : [True, "You can't take the keys as long as the guard has them."],
 		"takable2" : [True, "You take the bunch of keys."],
 		"movable1" : [True, "You move the keys. Nothing special happens..."],
 		"kickable1" : [True, "You kick the bunch of keys. Nothing special happens..."]
 		},
 	"dead guard" : {
 		"room" : "corridor",
-		"look1" : "A very dead guard, wearing a uniform.",
-		"look2" : "A very dead and naked guard.",
+		"look1" : "A dead guard, wearing a uniform.",
+		"look2" : "A dead and naked guard.",
 		"keywords" : ["dead guard", "guard", "dead", "guardian", "body", "corpse"],
 		"hidden" : False,
 		"takable1" : [False, "Taking a dead guard sounds like a horrible idea."],
@@ -80,7 +79,7 @@ items = {
 		},
 	"uniform" : {
 		"room" : ["your cell", "corridor"],
-		"look1" : "An ancient military uniform. One looks like a true warrior in it.",
+		"look1" : "An ancient military uniform. One looks like a true dungeon guard in it.",
 		"keywords" : ["uniform", "uniforms", "clothe", "clothes"],
 		"hidden" : False,
 		"takable1" : [False, "You can't take the guard's uniform while he is alive."],
@@ -91,7 +90,7 @@ items = {
 		},
 	"box" : {
 		"room" : ["corridor"],
-		"look1" : "A heavy wooden box. It feels like it is full with sand.",
+		"look1" : "A heavy wooden box.",
 		"keywords" : ["box", "wooden"],
 		"hidden" : False,
 		"takable1" : [False, "The box is too heavy to be taken."],
@@ -118,8 +117,8 @@ items = {
 		},
 	"dead body": {
 		"room" : "western cell",
-		"look1" : "A dead prisoner's body. It has signs of having being tortured. It has a lighter in a pocket.",
-		"look2" : "A dead prisoner's body. It has signs of having being tortured.",
+		"look1" : "A dead prisoner's body. It has a lighter in a pocket.",
+		"look2" : "A dead prisoner's body.",
 		"keywords" : ["dead body", "dead", "body", "corpse", "prisioner"],
 		"hidden" : False,
 		"takable1" : [False, "You can't take the body."],
@@ -143,11 +142,11 @@ items = {
 		"hidden" : False,
 		"takable1" : [False, "You can't take the cupboard. It is attached to the wall."],
 		"movable1" : [False, "You can't move the cupboard. It is attached to the wall."],
-		"kickable1" : [True, "You kick the cupboard until it tears apart. There is a leather pouch inside."]
+		"kickable1" : [True, "You kick the cupboard until it breaks. Inside it you find a pouch with some powders."]
 		},
 	"pouch": {
 		"room" : "eastern cell",
-		"look1" : "A leather pouch containing som kind of powders.",
+		"look1" : "A leather pouch containing poisonous powders.",
 		"keywords" : ["pouch", "powder", "powders", "leather", "poison", "venom"],
 		"hidden" : True,
 		"takable1" : [True, "You take the pouch with the powders inside and hide it behind your back."],
@@ -156,8 +155,8 @@ items = {
 		},
 	"two guards": {
 		"room" : "guard room",
-		"look1" : "Two guards drinking beer and playing cards. They are drunk. They believe you are one of them. One of them wears a metalic wristband with a dragon head drawn on it.",
-		"look2" : "Two sleeping guards. One of them wears a metalic wristband with a dragon head drawn on it.",
+		"look1" : "Two guards drinking beer in jars and playing cards. They believe you are one of them. One of them wears a bracelet with a dragon head drawn on it.",
+		"look2" : "Two sleeping guards. One of them wears a bracelet with a dragon head drawn on it.",
 		"look3" : "Two sleeping guards.",
 		"keywords" : ["two guards", "guard", "guards", "sleeping", "guardian", "guardians", "sentinel", "sentinels"],
 		"hidden" : False,
@@ -178,15 +177,15 @@ items = {
 		"kickable1" : [True, "You kick the beer jars so that the beer falls on the guards. They get extremely upset. They then realize who you really are and kill you."],
 		"kickable2" : [True, "You kick the beer jars so that they crash into the floor, spreading out the beer."]
 		},
-	"wristband": {
+	"bracelet": {
 		"room" : "guard room",
-		"look1" : "A metalic wristband with a dragon head drawn on it.",
-		"keywords" : ["wristband", "dragon", "head", "metalic", "bracelet"],
+		"look1" : "A bracelet with a dragon head drawn on it.",
+		"keywords" : ["bracelet", "wristband", "dragon", "head"],
 		"hidden" : False,
-		"takable1" : [True, "You try to take the wristband from the guard. They see this as an attack. They then realize who you really are and kill you."],
-		"takable2" : [True, "You take the wristband"],
-		"movable1" : [False, "You can't move the wristband."],
-		"kickable1" : [False, "You can't kick the wristband."]
+		"takable1" : [True, "You try to take the bracelet from the guard. They see this as an attack. They then realize who you really are and kill you."],
+		"takable2" : [True, "You take the bracelet."],
+		"movable1" : [False, "You can't move the bracelet."],
+		"kickable1" : [False, "You can't kick the bracelet."]
 		},
 	"bench": {
 		"room" : "guard room",
@@ -244,8 +243,8 @@ items = {
 	"final gate": {
 		"room" : "the yard",
 		"look1" : "It is the gate to freedom. The gate has no keyhole,"
-		"but instead there is a kind of magnetic opening mechanism at its center, with a headless dragon body drawn in it. It seems "
-		"that the drawing must be completed with a head for the gate to open.",
+		"but instead it has an opening mechanism at its center, with a headless dragon body drawn in it. It seems "
+		"that the dragon body must be completed with a dragon head for the gate to open.",
 		"keywords" : ["final gate", "final", "gate", "door"],
 		"hidden" : False,
 		"takable1" : [False, "You can't take the final gate."],

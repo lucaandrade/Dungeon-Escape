@@ -19,9 +19,7 @@ GENERAL GLOBAL VARIABLES
 """
 LOC = "your cell" # The initial location (room)
 INV = [] # The player inventory
-INVmax = 10 # Max number of items that can be stored in the inventory
-#DIR = "" # Initializes the directions
-#ITEM = "" # Handles an item when it is taken or dropped or looked at
+INVmax = 5 # Max number of items that can be stored in the inventory
 ROOMS_VISITED = [] # List with visited rooms
 
 """
@@ -44,15 +42,12 @@ CORPSE_BELT = True # True if the corpse wears the belt
 GUARD1_IS_ALIVE = True # True if guard is alive
 DEAD_GUARD_HAS_UNIFORM = True # True if the dead guard still wears the uniform
 DEAD_GUARD_HAS_KEYS = True # True if the dead guard has the bunch of keys
-#LIGHTER_REVEALED = False # True if the player discovers the lighter
-#POUCH_REVEALED = False # True if the player discovers the pouch
 BOX_ON_BUTTON = False # True if the box in the corridor is moved 
 GUARDS_SLEEP = False # True if the pouch is used in the guards' room
 BENCH_MOVED = False # True if the bench in the guards' room is moved
-#TORCH_REVEALED = False # True if the player discovers the torch
 TORCH_FIRE = False # True if torch is in the inventory and lighter is in the inventory and lighter is used
 SPIKES_UP = True # False if the button in darkness is pressed
-
+PLAYER_WON = False # True if the player wins the TicTacToe match
 
 
 def printw(txt):
@@ -64,6 +59,8 @@ def help():
 	print("\n")
 	print("DUNGEON ESCAPE - HELP MENU")
 	print("=" * len(("DUNGEON ESCAPE - HELP MENU")))
+	print("This is a text based adventure game in which the player uses a series of ")
+	print("commands and arguments in order to get to the next room, until she escapes the dungeon.")
 	print("Type no options to start the game or...")
 	print("You can type one of the following options:\n")
 	print("   -h, --help:      Prints this help menu")
@@ -81,7 +78,7 @@ def info():
 	printw("You begin in a dungeon cell. The door is locked. There is a guard in the corridor."
 	 		" What can you do?")
 	printw("Use commands such us 'examine', 'look', 'take' or 'use' in order to solve the problems "
-			"and get to the next room. Your price is freedom...")
+			"and get to the next room. Your reward is freedom...")
 	print("\n")
 	printw("This is my first text adventure game. I made it as a final project in a course on Python "
 		"programming at Blekinge Institute of Technology (BTH) in Sweden.")
@@ -105,7 +102,11 @@ def cheat():
 	print("\n")
 	print("DUNGEON ESCAPE - CHEAT")
 	print ("=" * len("DUNGEON ESCAPE - CHEAT"))
-	print("So you want to know how to get to end of the dungeon alive?\nOk, I will expose the shortest way:\n")
+	print("There is a file that you can load that takes you to the very last room of the game.")
+	print("In order to load it do one of these things:")
+	print("- If you are in the start menu, type 2 and then type cheat.json or...")
+	print("- If you are in the game, type load and then type cheat.json.\n")
+	print("So you want to know how to get to end of the dungeon without loading any file?\nOk, I will expose the shortest way:\n")
 	print("Room 1: Your cell")
 	print("=" * len("Room 1: Your cell"))
 	print(">>take belt   ... ... Take the belt from the corpse")
@@ -136,7 +137,7 @@ def cheat():
 	print("Room 5: Guard room")
 	print("=" * len("Room 5: Guard room"))
 	print(">>use pouch   ... ... Pour the powders into the guards' beer jars so that they fall asleep")
-	print(">>take wristband. ... Take the wristband from one of the guards")
+	print(">>take bracelet. ... Take the bracelet from one of the guards")
 	print(">>move bench  ... ... Move the bench to unlock the exit to the south")
 	print(">>south       ... ... Go south to the next room: South room")
 	print("\n")
@@ -155,7 +156,7 @@ def cheat():
 	print("\n")
 	print("Room 8: The yard")
 	print("=" * len("Room 8: The yard"))
-	print(">>use wristband.. ... Use the wristband to open the Final Gate")
+	print(">>use bracelet.. ... Use the bracelet to open the Final Gate")
 	print(">>east        ... ... Go east to the next room: The TicTacToe chamber")
 	print("\n")
 	print("Room 9: The TicTacToe chamber")
@@ -165,15 +166,7 @@ def cheat():
 
 def gameOver(): # TODO: Write a text. Go to the main menu.
 	print("\n--++--+-+--++-+--+..GAME OVER..+--+-++--+-+--++--\n")
-	printw("Type 1 to go back to the start menu. Type 2 to quit the game.")
-	inp = input(">")
-	inp = inp.strip()
-	inp = inp.lower()
-	if inp == "1":
-		gameStart()
-	if inp == "2":
-		printw("Thank you for playing!\n\n\n")
-		sys.exit(0)
+	sys.exit(0)
 	
 
 def saveGameStatus():
@@ -183,8 +176,6 @@ def saveGameStatus():
 	inp = inp.strip()
 	if ".json" not in inp[-5:]:
 		inp = inp + ".json"
-	
-
 	for i in rooms["your cell"]["items"]:
 		yourCell_items.append(i)
 	for item in rooms["corridor"]["items"]:
@@ -201,14 +192,6 @@ def saveGameStatus():
 		darkness_items.append(item)
 	for item in rooms["the yard"]["items"]:
 		theYard_items.append(item)
-	print(yourCell_items)
-	print(corridor_items)
-	print(westernCell_items)
-	print(easternCell_items)
-	print(guardRoom_items)
-	print(southRoom_items)
-	print(darkness_items)
-	print(theYard_items)
 	
 	gameStatus = {
 		"LOC" : LOC,
@@ -246,6 +229,8 @@ def loadGameStatus():
 	printw("Loading game status...\n")
 	inp = input("Type the save file name: ")
 	inp = inp.strip()
+	if ".json" not in inp[-5:]:
+		inp = inp + ".json"
 	if os.path.isfile(inp):
 		jsonfile = open(inp, "r")
 		jsonobject = json.load(jsonfile)
@@ -285,10 +270,14 @@ def printMap():
 		maps.map3()
 	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell"]: 
 		maps.map4()
+	elif ROOMS_VISITED == ["your cell", "corridor", "guard room"]: 
+		maps.map14()
 	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell"]: 
 		maps.map5()
 	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell"]: 
 		maps.map5()
+	elif ROOMS_VISITED == ["your cell", "corridor", "guard room", "darkness"]: 
+		maps.map15()
 	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room"]: 
 		maps.map6()
 	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "western cell", "guard room"]: 
@@ -318,17 +307,19 @@ def printMap():
 	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "eastern cell", "guard room", "south room", "darkness", "the yard"]: 
 		maps.map10()
 	elif ROOMS_VISITED == ["your cell", "corridor", "western cell", "guard room", "darkness"]:
-		maps12()
+		map12()
 	elif ROOMS_VISITED == ["your cell", "corridor", "guard room", "western cell", "darkness"]:
-		maps.maps12()
+		maps.map12()
 	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "guard room", "darkness", "south room"]:
-		maps.maps13()
+		maps.map13()
 	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "guard room", "south room", "darkness"]:
-		maps.maps13()
+		maps.map13()
 	elif ROOMS_VISITED == ["your cell", "corridor", "guard room", "darkness", "south room"]:
-		maps.maps13()
+		maps.map13()
 	elif ROOMS_VISITED == ["your cell", "corridor", "eastern cell", "guard room", "south room", "darkness"]:
-		maps.maps13()
+		maps.map13()
+	elif "freedom" in ROOMS_VISITED:
+		maps.map11()
 
 def roomInfo():
 	"""
@@ -339,7 +330,6 @@ def roomInfo():
 	if LOC not in ROOMS_VISITED:
 		ROOMS_VISITED.append(LOC)
 	print(chr(27) + "[2J" + chr(27) + "[;H") # Clears the console
-	print("ITEMS", yourCell_items)
 	printMap()
 	print("\n\n")
 	printw(rooms[LOC]["name"])
@@ -348,29 +338,13 @@ def roomInfo():
 		if LOC == "guard room":
 			printw("You enter in a room with two guards playing cards and drinking beer. When they see you they immediately grip you and then kill you.")
 			gameOver()
+	elif LOC == "freedom":
+		printw("After winning the TicTacToe game, the chamber opened... You are free!")
+
 	printw(rooms[LOC]["info"])
-
-	##### DEBUG #####
-	# print("\n\n")
-	# print("INV: ", INV)
-	# print("LOC: ", LOC)
-	# print("CORPSE_BELT: ", CORPSE_BELT)
-	# print("GUARD1_IS_ALIVE: ", GUARD1_IS_ALIVE)
-	# print("DEAD_GUARD_HAS_UNIFORM: ", DEAD_GUARD_HAS_UNIFORM)
-	# print("DEAD_GUARD_HAS_KEYS: ", DEAD_GUARD_HAS_KEYS)
-	# print("BOX_ON_BUTTON:", BOX_ON_BUTTON)
-	# print("GUARDS_SLEEP: ", GUARDS_SLEEP)
-	# print("TORCH_FIRE: ", TORCH_FIRE)
-	# print("Lighter hidden: ", items["lighter"]["hidden"])
-	# print("Pouch hidden: ", items["pouch"]["hidden"])
-	# print("Torch hidden: ", items["torch"]["hidden"])
-	# print("Trap button hidden: ", items["trap button"]["hidden"])
-	# print("Spikes trap hidden: ", items["spikes trap"]["hidden"])
-
 
 def printINV():
 	"""Prints a list with the items in the player's inventory"""
-	global INV
 	if len(INV) == 0:
 		printw("Your inventory is empty.")
 	else:
@@ -511,14 +485,17 @@ def itemExamine(arg):
 				return
 			else:
 				printw("You can't see any pouch.")
-		if LOC == "south room" and arg == "two guards": #-------------------------TWO GUARDS-------------------
+		if LOC == "guard room" and arg == "two guards": #-------------------------TWO GUARDS-------------------
 			if GUARDS_SLEEP == False:
 				printw(items[arg]["look1"])
-			else:
-				# if "wristband" in INV:
-				printw(items[arg]["look3"])
-				# else:
-				# 	printw(items[arg]["look2"])
+				return
+			elif GUARDS_SLEEP == True:
+				if "bracelet" in INV:
+					printw(items[arg]["look3"])
+					return
+				else:
+				 	printw(items[arg]["look2"])
+				 	return
 		if LOC == "south room" and arg == "torch": #----------------------------- TORCH ---------------------
 			if items["torch"]["hidden"] == False:
 				printw(items[arg]["look1"])
@@ -556,7 +533,6 @@ def itemTake(arg):
 			if LOC == "your cell" and arg == "keys": #--------------------KEYS in your cell-----------------------------------
 				if GUARD1_IS_ALIVE == True:
 					printw(items[arg]["takable1"][1])
-					gameOver()
 				else:
 					if arg in rooms[LOC]["items"]:  
 						printw(items[arg]["takable2"][1])	
@@ -632,9 +608,9 @@ def itemTake(arg):
 					else:
 						printw("The beer jars are not here.")
 						return
-			elif LOC == "guard room" and arg == "wristband": #--------------------------WRISTBAND in guard room--------------------------
+			elif LOC == "guard room" and arg == "bracelet": #--------------------------BRACELET in guard room--------------------------
 				if GUARDS_SLEEP == False:
-					printw(items[arg]["takable1"[1]])
+					printw(items[arg]["takable1"][1])
 					gameOver()
 				else:
 					if arg in rooms[LOC]["items"]:  
@@ -643,7 +619,7 @@ def itemTake(arg):
 						roomRemoveItem(arg)
 						return
 					else:
-						printw("The wristband is not here.")
+						printw("The bracelet is not here.")
 						return
 			elif LOC == "south room" and arg == "torch": #---------------------------TORCH in south room-------------------
 				if items["torch"]["hidden"] == False:
@@ -672,7 +648,7 @@ def itemTake(arg):
 			else: # If the item can't be taken
 				printw(items[arg]["takable1"][1])
 		else:
-			printw("Your inventory is full. You need to drop something if you want to take this item.")
+			printw("Your inventory is full. You need to drop something if you want to take an item.")
 	else:
 		printw("There is not such thing in here.")
 
@@ -684,6 +660,7 @@ def itemDrop(arg):
 		rooms[LOC]["items"].append(arg) 
 		cc = -1
 		for i in INV:
+			cc += 1
 			if INV[cc] == arg:
 				del INV[cc]
 		printw("You drop: " + arg)
@@ -706,14 +683,14 @@ def itemUse(arg):
 			else:
 				printw("You have already killed the guard.")
 				return
-		elif arg == "lighter": #-------------------------------LIGHTER-------------------------------------
+		elif LOC == "darkness" and arg == "lighter": #-------------------------------LIGHTER-------------------------------------
 			if "torch" in INV:
 				TORCH_FIRE = True
 				printw("You use the lighter and lit the torch. The torch's flame shines.")
 				items["trap button"]["hidden"] == False
 				items["spikes trap"]["hidden"] == False
-				rooms["darkness"]["items"].append("trap button")
-				rooms["darkness"]["items"].append("spikes trap")
+				rooms[LOC]["items"].append("trap button")
+				rooms[LOC]["items"].append("spikes trap")
 			else:
 				printw("You use the lighter. Nothing special happens...")
 				return
@@ -731,13 +708,13 @@ def itemUse(arg):
 			else:
 				printw("You use the torch. Its flame shines.")
 				return
-		elif arg == "wristband": #----------------------------WRISTBAND--------------------------------------
+		elif arg == "bracelet": #----------------------------WRISTBAND--------------------------------------
 			if LOC == "the yard":
-				printw("You use the wristband. You place it on the gate so that the dragon's head connects to the"
+				printw("You use the bracelet. You place it on the gate so that the dragon's head connects to the"
 					" dragon's body. The final gate opens...")
 				rooms[LOC]["doorOpen"]["east"][0] = True
 			else:
-				printw("You use the wristband. Nothing special happens...")
+				printw("You use the bracelet. Nothing special happens...")
 				return
 	else:
 		print("You can only use items that are in your inventory.")
@@ -786,6 +763,7 @@ def itemKick(arg):
 				items["pouch"]["hidden"] = False
 				printw(items[arg]["kickable1"][1])
 				rooms[LOC]["items"].append("pouch")
+				roomRemoveItem(arg)
 				return
 		elif arg == "two guards":
 			if GUARDS_SLEEP == False:
@@ -918,7 +896,7 @@ def roomLeave(w1):
 def roomObjects():
 	#global LOC, LIGHTER_REVEALED, POUCH_REVEALED, TORCH_REVEALED
 	print("\n")
-	printw("This room contains the following things:")
+	printw("You can see these objects:")
 	for i in rooms[LOC]["items"]:
 		if i in items:
 			if items[i]["hidden"] == False:
@@ -931,6 +909,41 @@ def roomHint(w1):
 def gameQuit(): # TODO: save options
 	printw("Thank you for playing!")
 	sys.exit()
+
+def gameHelp():
+	"""
+	Prints a list of the available commands and how to use them
+	"""
+	print("\n")
+	print("HELP MENU - Commands list:")
+	print("=========================\n")
+	print("help, h:   ...   ...   Prints this help menu\n")
+	print("info, i:   ...   ...   Prints a general description of the current room and ")
+	print("                             the updated dungeon map\n")
+	print("look, l:   ...   ...   Prints a more detailed description of the current room, ")
+	print("                             sometimes revealing crucial information\n")
+	print("objects, obj:.   ...   Prints a list of all existing objects in the current room")
+	print("                             (a person is also considered as an object)\n")
+	print("examine, ex [obj]...   Prints a description of the object, sometimes revealing")
+	print("                             crucial information\n")
+	print("take, t [obj]:   ...   Takes an existing object and stores it in the player's")
+	print("                             inventory, e.g. take belt\n")
+	print("drop, d [obj]:   ...   Drops an object from the inventory, e.g. drop belt\n")
+	print("use, u [obj]:.   ...   Uses an object in the inventory, e.g. use belt\n")
+	print("open, o [obj]:   ...   Opens an object, e.g. open door\n")
+	print("move, m [obj]:   ...   Moves an object, e.g. move box\n")
+	print("kick, k [obj]:   ...   Kicks an object, e.g. kick cupboard\n")
+	print("exits:     ...   ...   Prints a list of all available exits in the current room\n")
+	print("inventory, inv:  ...   Prints a list with all items in the player's inventory\n")
+	print("north, n:  ...   ...   Goes north\n")
+	print("south, s:  ...   ...   Goes south\n")
+	print("east, e:   ...   ...   Goes east\n")
+	print("west, w:   ...   ...   Goes west\n")
+	print("save:      ...   ...   Saves the game state to a json file\n")
+	print("load:      ...   ...   Loads the game state from a json file\n")
+	print("hint:      ...   ...   Prints a hint that helps the player get to the next room\n")
+	print("quit:      ...   ...   Exits the game\n")
+
 
 def gameStart(): #TODO: develop this with more information
 	"""Game presentation. This function gets called only once, at the beginning""" 
@@ -961,7 +974,7 @@ def gameStart(): #TODO: develop this with more information
 	print("\n")
 	print("                  TYPE 2 TO LOAD GAME STATUS")
 	print("\n")
-	print("               TYPE --help TO SEE THE HELP MENU.")
+	print("               TYPE help TO SEE THE HELP MENU.")
 	print("\n")
 	while True:
 		inp = input("-->")
@@ -972,13 +985,15 @@ def gameStart(): #TODO: develop this with more information
 			game()
 		elif inp == "2":
 			loadGameStatus()
-		elif inp == "-h" or inp == "--help":
-			pass
+		elif inp == "h" or inp == "help":
+			gameHelp()
 		else:
-			printw("Sorry, I didn't understand that. Please type --help to see the help menu.")
+			printw("Sorry, I didn't understand that. Please type help to see the help menu.")
 
 def playerWins():
 	"""When the player wins!"""
+	global PLAYER_WON
+	PLAYER_WON = True
 	print(chr(27) + "[2J" + chr(27) + "[;H") # Clears the console
 	print("\n")
 	print("X", "|", "X", "|", "X")
@@ -993,7 +1008,7 @@ def playerWins():
 	printw("RUN BEFORE THE GUARDS AWAKE!")
 	print("\n")
 	printw("Thank you for playing!")
-	sys.exit()
+	gameOver()
 
 def game():
 	while True:
@@ -1004,21 +1019,10 @@ def game():
 		inpList = inp.split(" ")
 		w1 = inpList[0] # This is the first word. This will be used as argument to call different functions later.
 		w2 = " ".join(inpList[1:])  # These are the following word(s). This will also be used as an argument.
-		if w1 == "-h" or w1 == "--help": 
-			help()
-		elif w1 == "-i" or w1 == "--info": 
-			info()
-		elif w1 == "-v" or w1 == "--version": 
-			version()
-		elif w1 == "-a" or w1 == "--about": 
-			about()
-		elif w1 == "-c" or w1 == "--cheat": 
-			cheat()
+		if w1 == "h" or w1 == "help": 
+			gameHelp()
 		elif w1 == "i" or w1 == "info": 
 			roomInfo()
-		elif w1 == "h" or w1 == "help": 
-			pass
-			#roomCommands()
 		elif w1 == "l" or w1 == "look": 
 			roomLook()
 		elif w1 == "obj" or w1 == "object" or w1 == "objects": 
@@ -1073,7 +1077,7 @@ def game():
 		elif w1 == "q" or w1 == "quit":
 			gameQuit()
 		elif LOC == "TicTacToe" and w1 == "play":
-			tictactoe.tictactoe()
+			tictactoe.gameStart()
 		else:
 			printw("Sorry, I didn't understand that. Please type --help to see the help menu.")
 

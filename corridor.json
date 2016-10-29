@@ -1,0 +1,58 @@
+{
+    "TORCH_FIRE": false,
+    "DARKNESS ITEMS": [
+        "spikes trap",
+        "trap button"
+    ],
+    "WESTERN CELL ITEMS": [
+        "dead body"
+    ],
+    "CORPSE_BELT": false,
+    "BOX_ON_BUTTON": true,
+    "GUARDS_SLEEP": false,
+    "EASTERN CELL ITEMS": [],
+    "DEAD_GUARD_HAS_UNIFORM": false,
+    "CORRIDOR ITEMS": [
+        "dead guard",
+        "box",
+        "button",
+        "uniform"
+    ],
+    "DEAD_GUARD_HAS_KEYS": false,
+    "ROOMS_VISITED": [
+        "your cell",
+        "corridor",
+        "eastern cell",
+        "western cell"
+    ],
+    "SPIKES_UP": true,
+    "BENCH_MOVED": false,
+    "LIGHTER_HIDDEN": true,
+    "GUARD ROOM ITEMS": [
+        "two guards",
+        "beer jars",
+        "bench",
+        "bracelet"
+    ],
+    "POUCH_HIDDEN": false,
+    "YOUR CELL ITEMS": [
+        "corpse",
+        "guard"
+    ],
+    "INV": [
+        "belt",
+        "keys",
+        "pouch",
+        "lighter"
+    ],
+    "LOC": "corridor",
+    "THE YARD ITEMS": [
+        "final gate"
+    ],
+    "SOUTH ROOM ITEMS": [
+        "wardrobe",
+        "torch"
+    ],
+    "TORCH_HIDDEN": true,
+    "GUARD1_IS_ALIVE": false
+}
