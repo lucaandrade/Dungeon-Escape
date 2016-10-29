@@ -29,8 +29,10 @@ rooms = {
     "your cell" : {
         "name" : "YOUR CELL",
         "info" : "You are in a creepy dungeon cell. There is a rotten corpse lying on the ground.",
-        "look" : "There is a door to the south that leads to the corridor. There is a guard in the corridor.",
-        "look2" : "There is a door to the south that leads to the corridor. Behind it you can see the dead "
+        "look" : "There is a corpse. There is a door to the south that leads to the corridor. There is a guard "
+                 "in the corridor.",
+        "look2" : "There is a corpse. There is a door to the south that leads to the corridor. Behind it you "
+                  "can see the dead "
                   "guard lying on the floor.",
         "exits" : ["south"],
         "doorOpen" : {"south" : [False, "corridor"]},
@@ -41,26 +43,26 @@ rooms = {
     },
     "corridor" : {
         "name" : "THE CORRIDOR",
-        "info" : "You are in the dungeon's corridor. The dead guard's body lies on the floor.",
+        "info" : "You are in the dungeon's corridor. The body of the guard lies on the floor.",
         "look" : "There is a big wooden box in one side of the corridor. There is a round metal button on the floor,"
-                 " placed next to a gate in the south. There is the dead guard lying on the floor. There are two"
+                 " placed next to a gate in the south. There is the body of the guard lying on the floor. There are two"
                  " open cells, one to the west and one to the east. There is a gate to the south.",
         "exits" : ["north", "south", "east", "west"],
         "doorOpen" : {"north" : [True, "your cell"], "south" : [False, "guard room"], "east" : [True, "eastern cell"], 
                       "west" : [True, "western cell"]},
-        "items" : ["dead guard", "box", "button", "uniform"],
+        "items" : ["body", "box", "button", "uniform"],
         "hint" : "You should look like a guard if you want to survive. Explore the cells to the west and the east "
                  "in search of items. What can the box and the button do?",
         "help" : "You can use these commands in this room: look / objects / take / , TODO"
     },
     "western cell" : {
         "name" : "THE WESTERN CELL",
-        "info" : "A creepy dungeon cell. There is a dead body chained to the wall.",
-        "look" : "This cell is as creepy and dark as the rest of the dungeon. There is a dead body chained "
+        "info" : "A creepy dungeon cell. There is a cadaver chained to the wall.",
+        "look" : "This cell is as creepy and dark as the rest of the dungeon. There is a cadaver chained "
                  "to the wall.",
         "exits" : ["east"],
         "doorOpen" : {"east" : [True, "corridor"]},
-        "items" : ["dead body", "lighter"],
+        "items" : ["cadaver", "lighter"],
         "hint" : "Have you examined the dead body?",
         "help" : "You can use these commands in this room: look / objects / take / , TODO"
     },
@@ -77,15 +79,15 @@ rooms = {
     "guard room" : {
         "name" : "THE GUARDS' ROOM",
         "info" : "You are at the guards' room.",
-        "look" : "You see two guards playing cards and drinking beer in big jars. They believe you are one of them. "
+        "look" : "You see two warriors playing cards and drinking beer in big jars. They believe you are a guard. "
                  "There is a bench blocking an exit to the south.",
-        "look2" : "The guards sleep deeply. There is a bench blocking an exit to the south.",
-        "look3" : "The guards sleep deeply. The bench no longer blocks the exit to the south.",
+        "look2" : "The warriors sleep deeply. There is a bench blocking an exit to the south.",
+        "look3" : "The warriors sleep deeply. The bench no longer blocks the exit to the south.",
         "exits" : ["north", "south", "east"],
         "doorOpen" : {"north" : [True, "corridor"], "south" : [False, "south room"], "east" : [True, "darkness"]},
-        "items" : ["two guards", "beer jars", "bench", "bracelet"],
+        "items" : ["two warriors", "beer jars", "bench", "bracelet"],
         "hint" : "What can those powders in the pouch be used for? They might combine perfectly with the beers... "
-                 "One guard is wearing an interesting item. Have you tried to move the bench?",
+                 "One warrior is wearing an interesting item. Have you tried to move the bench?",
         "help" : "You can use these commands in this room: look / objects / take / , TODO"
     },
     "south room" : {
@@ -104,13 +106,12 @@ rooms = {
         "info" : "You are now in darkness...",
         "info1" : "The only light in the darkness is the flame that shines in a torch.",
         "look" : "Darkness is all you see...",
-        "look2" : "The shining flame of the torch reveals a spike trap installed in the center of "
-                  "the room. By the trap's side there is "
-                  "a button on the floor.",
+        "look2" : "The shining flame of the torch reveals a spike trap in the center of "
+                  "the room and a switch on the floor.",
         "look3" : "The trap has been deactivated. The spikes are down.",
         "exits" : ["east", "west"],
         "doorOpen" : {"west": [True, "guard room"], "east" : [True, "the yard"]},
-        "items" : ["spikes trap", "trap button"],
+        "items" : ["spikes trap", "switch"],
         "hint" : "Have you found a lighter? Do you have a torch? When you are able to see you will "
                  "then need to kick something.",
         "help" : "You can use these commands in this room: look / objects / take / , TODO"

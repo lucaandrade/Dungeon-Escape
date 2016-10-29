@@ -120,18 +120,18 @@ def cheat():
     print(">>take belt   ... ... Take the belt from the corpse")
     print(">>use belt    ... ... Kill the guard by strangling him to death")
     print(">>take keys   ... ... Take the keys from the dead guard")
-    print(">>open door   ... ... Open the door of your cell")
+    print(">>use keys    ... ... Use the keys to open the door of your cell")
     print(">>south       ... ... Go south to the next room: The corridor")
     print("\n")
     print("Room 2: The corridor")
     print("=" * len("Room 2: The corridor"))
-    print(">>take uniform... ... Take the dead guard's uniform and put it on")
+    print(">>take uniform... ... Take the body's uniform and put it on")
     print(">>move box    ... ... Move the box and place it on the button. The gate to the south opens")
     print(">>west        ... ... Go west to the next room: Western cell")
     print("\n")
     print("Room 3: Western cell")
     print("=" * len("Room 3: Western cell"))
-    print(">>take lighter... ... Take the lighter from inside the dead body's pocket")
+    print(">>take lighter... ... Take the lighter from inside the cadaver's pocket")
     print(">>east        ... ... Go east to the next room: The corridor (again)")
     print(">>east        ... ... Go east to the next room: Eastern cell")
     print("\n")
@@ -144,8 +144,8 @@ def cheat():
     print("\n")
     print("Room 5: Guard room")
     print("=" * len("Room 5: Guard room"))
-    print(">>use pouch   ... ... Pour the powders into the guards' beer jars so that they fall asleep")
-    print(">>take bracelet. ... Take the bracelet from one of the guards")
+    print(">>use pouch   ... ... Pour the powders into the warriors' beer jars so that they fall asleep")
+    print(">>take bracelet.. ... Take the bracelet from one of the guards")
     print(">>move bench  ... ... Move the bench to unlock the exit to the south")
     print(">>south       ... ... Go south to the next room: South room")
     print("\n")
@@ -160,7 +160,7 @@ def cheat():
     print("Room 7: Darkness")
     print("=" * len("Room 7: Darkness"))
     print(">>use lighter ... ... Use the lighter to lit the torch so that you can see")
-    print(">>kick button ... ... Kick the trap button to deactivate the spikes trap")
+    print(">>kick button ... ... Kick the switch to deactivate the spikes trap")
     print(">>east        ... ... Go east to the next room: The yard")
     print("\n")
     print("Room 8: The yard")
@@ -360,7 +360,7 @@ def roomInfo():
     printw("=" * len(rooms[LOC]["name"]))
     if DEAD_GUARD_HAS_UNIFORM == True:
         if LOC == "guard room":
-            printw("You enter in a room with two guards playing cards and drinking beer. "
+            printw("You enter in a room with two warriors playing cards and drinking beer. "
                    "When they see you they immediately grip you and then kill you.")
             gameOver()
     elif LOC == "freedom":
@@ -403,48 +403,59 @@ def keywordSearch(w2, func):
     Searches for a keyword in items["keywords"] and returns the keyword and the function specified in the argument
     """
     search = w2.split(" ")
-    for i in search:
-        for item in items.keys():
-            if i in items[item]["keywords"] and LOC in items[item]["room"]:
-                arg = items[item]["keywords"][0]
-                if func == "itemExamine":
-                    itemExamine(arg)
-                    return 0
-                elif func == "itemTake":
-                    itemTake(arg)
-                    return 0
-                elif func == "itemDrop":
-                    if arg not in INV:
-                        printw("You don't have that in your inventory.")
-                        return 0
-                    else:
-                        itemDrop(arg)
-                        return 0
-                elif func == "itemUse":
-                    itemUse(arg)
-                    return 0
-                elif func == "itemOpen":
-                    itemOpen(arg)
-                    return 0
-                elif func == "itemMove":
-                    itemMove(arg)
-                    return 0
-                elif func == "itemKick":
-                    itemKick(arg)
-                    return 0
-            elif i in INV:
-                arg = items[item]["keywords"][0]
-                if func == "itemExamine":
-                    itemExamine(i)
-                    return 0
-                if func == "itemDrop":
-                    itemDrop(i)
-                    return 0
-                elif func == "itemUse":
-                    itemUse(i)
-                    return 0
+    inp = search[0]
+    for obj in items:
+        if inp in items[obj]["keywords"]:
+            arg = items[obj]["keywords"][0]
+            if func == "itemExamine":
+                itemExamine(arg)
+            elif func == "itemTake":
+                itemTake(arg)
+            elif func == "itemDrop":
+                itemDrop(arg)
+            elif func == "itemUse":
+                itemUse(arg)
+            elif func == "itemOpen":
+                itemOpen(arg)
+            elif func == "itemMove":
+                itemMove(arg)
+            elif func == "itemKick":
+                itemKick(arg)
+    # for i in search:
+    #     for item in items.keys():
+    #         if i not in item["item"]["keywords"]:
+    #             printw("You can't do that.")
+    #             return
+    #         elif i in item["item"]["keywords"]: #and LOC in items[item]["room"]:
+    #             arg = item["item"]["keywords"][0]
+    #             if func == "itemExamine":
+    #                 itemExamine(arg)
+    #                 #return # M
+    #             elif func == "itemTake":
+    #                 itemTake(arg)
+    #                 # return 
+    #             elif func == "itemDrop":
+    #                 itemDrop(arg)
+    #             elif func == "itemUse":
+    #                 itemUse(arg)
+    #             elif func == "itemOpen":
+    #                 itemOpen(arg)
+    #             elif func == "itemMove":
+    #                 itemMove(arg)
+    #             elif func == "itemKick":
+    #                 itemKick(arg)
+    #             else:
+    #                 printw("You can't do that.")
+    #         # elif i in INV:
+    #         #     arg = items[item]["keywords"][0]
+    #         #     if func == "itemExamine":
+    #         #         itemExamine(i)
+    #         #     if func == "itemDrop":
+    #         #         itemDrop(i)
+    #         #     elif func == "itemUse":
+    #         #         itemUse(i)
 
-    printw("There is no such thing in here.")
+    
 
 def itemExamine(arg):
     """Implements the examine command"""
@@ -453,19 +464,19 @@ def itemExamine(arg):
         for item in items:
             if item == arg:
                 print(items[item]["look1"])
-                return
+                #return
     elif arg in rooms[LOC]["items"]: # Check if the item is in the room
         if LOC == "your cell" and arg == "corpse": #-------------------- CORPSE1 -----------------
             if CORPSE_BELT == True:
                 printw(items[arg]["look1"])
-                return
+                # return
             else:
                 printw(items[arg]["look2"])
-                return
-        if LOC == "your cell" and arg == "guard": #----------------------- GUARD --------------------
+                # return
+        elif LOC == "your cell" and arg == "guard": #----------------------- GUARD --------------------
             if GUARD1_IS_ALIVE == True:
                 printw(items[arg]["look1"])
-                return
+                #return
             else:
                 if DEAD_GUARD_HAS_KEYS == True and DEAD_GUARD_HAS_UNIFORM == True:
                     printw(items[arg]["look2"])
@@ -473,66 +484,64 @@ def itemExamine(arg):
                 elif DEAD_GUARD_HAS_KEYS == False and DEAD_GUARD_HAS_UNIFORM == True:
                     printw(items[arg]["look3"])
                     return
-        if LOC == "corridor" and arg == "dead guard": #------------------------- DEAD GUARD------------------
+        elif LOC == "corridor" and arg == "body": #------------------------- DEAD GUARD------------------
             if DEAD_GUARD_HAS_UNIFORM:
                 printw(items[arg]["look1"])
-                return
+                #return
             else:
                 printw(items[arg]["look2"])
-                return
-        if LOC == "western cell" and arg == "dead body": #----------------------- DEAD BODY --------------
+                #return
+        elif LOC == "western cell" and arg == "cadaver": #----------------------- DEAD BODY --------------
             if "lighter" in INV:
                 printw(items[arg]["look2"])
-                return
+                #return
             else:
                 printw(items[arg]["look1"])
                 items["lighter"]["hidden"] = False
-                return
-        if LOC == "western cell" and arg == "lighter": #------------------------ LIGHTER ---------------------
+                #return
+        elif LOC == "western cell" and arg == "lighter": #------------------------ LIGHTER ---------------------
             if items["lighter"]["hidden"] == False:
                 printw(items[arg]["look1"])
-                return
+                #return
             else:
                 printw("You can't see any lighter.")
-        if LOC == "eastern cell" and arg == "cupboard":
+        elif LOC == "eastern cell" and arg == "cupboard":
             if items["pouch"]["hidden"] == True:
                 printw(items[arg]["look1"])
-                return
+                #return
             else:
                 printw(items[arg]["look2"])
-                return
-        if LOC == "eastern cell" and arg == "pouch": #---------------------------- POUCH ----------------------
+                #return
+        elif LOC == "eastern cell" and arg == "pouch": #---------------------------- POUCH ----------------------
             if items["pouch"]["hidden"] == False:
                 printw(items[arg]["look1"])
-                return
+                #return
             else:
                 printw("You can't see any pouch.")
-        if LOC == "guard room" and arg == "two guards": #-------------------------TWO GUARDS-------------------
+        elif LOC == "guard room" and arg == "two warriors": #-------------------------TWO GUARDS-------------------
             if GUARDS_SLEEP == False:
                 printw(items[arg]["look1"])
-                return
-            elif GUARDS_SLEEP == True:
-                if "bracelet" in INV:
-                    printw(items[arg]["look3"])
-                    return
-                else:
-                    printw(items[arg]["look2"])
-                    return
-        if LOC == "south room" and arg == "torch": #----------------------------- TORCH ---------------------
+                #return
+            elif "bracelet" in INV:
+                printw(items[arg]["look3"])
+            else:
+                printw(items[arg]["look2"])
+                #return
+        elif LOC == "south room" and arg == "torch": #----------------------------- TORCH ---------------------
             if items["torch"]["hidden"] == False:
                 printw(items[arg]["look1"])
-                return
+                #return
             else:
                 printw("You can't see any torch.")
-        if LOC == "darkness" and arg == "spikes trap":
+        elif LOC == "darkness" and arg == "spikes trap":
             if TORCH_FIRE == True:
                 printw(items[arg]["look1"])
-                return
+                #return
             else:
                 printw("You only see darkness...")
         else: # Examine items that aren't bounded to global variables
             printw(items[arg]["look1"])
-            return
+            #return
     else:
         printw("There is not such thing in this room.")
         return
@@ -560,11 +569,10 @@ def itemTake(arg):
                         INV.append(arg)
                         roomRemoveItem(arg)
                         DEAD_GUARD_HAS_KEYS = False
-                        return
+                        #return
                     else:
                         printw("The bunch of keys is not here.")
-                        return
-
+                        #return
             elif LOC == "your cell" and arg == "belt": #------------------BELT in your cell-----------
                 if arg in rooms[LOC]["items"]:
                     if CORPSE_BELT == True:
@@ -572,50 +580,51 @@ def itemTake(arg):
                         INV.append(arg)
                         roomRemoveItem(arg)
                         CORPSE_BELT = False
-                        return
+                        #return
                     else:
                         printw("You take the belt.")
                         INV.append(arg)
                         roomRemoveItem(arg)
-                        return
+                        #return
             elif LOC == "your cell" and arg == "uniform": #-------------------UNIFORM in your cell--------
                 if GUARD1_IS_ALIVE == True:
                     printw(items[arg]["takable1"][1])
-                    return
+                    #return
                 else:
                     printw(items[arg]["takable2"][1])
-                    return
+                    #return
             elif LOC == "corridor" and arg == "uniform":
+                roomRemoveItem(arg) 
                 printw(items[arg]["takable3"][1])
                 DEAD_GUARD_HAS_UNIFORM = False
-                return
+                #return
             elif LOC == "your cell" and arg == "guard": #-----------------------GUARD1 in your cell------
                 if GUARD1_IS_ALIVE == True:
                     printw(items[arg]["takable1"][1])
-                    return
+                    #return
                 else:
                     printw(items[arg]["takable2"][1])
-                    return
+                    #return
             elif LOC == "corridor" and arg == "uniform": #-----------------------UNIFORM in corridor-----
                 if DEAD_GUARD_HAS_UNIFORM == True:
+                    roomRemoveItem(arg)
                     printw(items[arg]["takable3"][1])
                     DEAD_GUARD_HAS_UNIFORM = False
-                    roomRemoveItem(arg)
-                    return
+                    #return
             elif LOC == "western cell" and arg == "lighter": #-------------------------LIGHTER---------
                 printw(items[arg]["takable1"][1])
                 INV.append(arg)
                 roomRemoveItem(arg)
-                return
+                #return
             elif LOC == "eastern cell" and arg == "pouch": #-------------------------POUCH in eastern cell--
                 if items["pouch"]["hidden"] == False:
                     printw(items[arg]["takable1"][1])
                     INV.append(arg)
                     roomRemoveItem(arg)
-                    return
+                    #return
                 else:
                     printw("You can't see any pouch here.")
-                    return
+                    #return
             elif LOC == "guard room" and arg == "beer jars": #-----------------------BEER JARS in guard room--
                 if GUARDS_SLEEP == False:
                     printw(items[arg]["takable1"[1]])
@@ -625,10 +634,10 @@ def itemTake(arg):
                         printw(items[arg]["takable2"][1])
                         INV.append(arg)
                         roomRemoveItem(arg)
-                        return
+                        #return
                     else:
                         printw("The beer jars are not here.")
-                        return
+                        #return
             elif LOC == "guard room" and arg == "bracelet": #--------------------------BRACELET in guard room----
                 if GUARDS_SLEEP == False:
                     printw(items[arg]["takable1"][1])
@@ -638,26 +647,26 @@ def itemTake(arg):
                         printw(items[arg]["takable2"][1])
                         INV.append(arg)
                         roomRemoveItem(arg)
-                        return
+                        #return
                     else:
                         printw("The bracelet is not here.")
-                        return
+                        #return
             elif LOC == "south room" and arg == "torch": #---------------------------TORCH in south room----
                 if items["torch"]["hidden"] == False:
                     printw(items[arg]["takable1"][1])
                     INV.append(arg)
                     roomRemoveItem(arg)
-                    return
+                    #return
                 else:
                     printw("You can't see any torch here.")
-                    return
+                    #return
             elif LOC == "darkness" and arg == "spikes trap": #-----------------------------SPIKES TRAP
                 if SPIKES_UP == True:
                     printw(items[arg]["takable1"][1])
                     gameOver()
                 else:
                     printw(items[arg]["takable2"][0])
-                    return
+                    #return
             elif items[arg]["takable1"][0] == True: #-ALL THE REST
                 printw(items[arg]["takable1"][1])
                 INV.append(arg) # Store the item in the player's inventory
@@ -685,47 +694,55 @@ def itemDrop(arg):
             if INV[cc] == arg:
                 del INV[cc]
         printw("You drop: " + arg)
+    else:
+        printw("You don't have that in the inventory.")
 
 def itemUse(arg):
     """Implements the use-command"""
     global GUARD1_IS_ALIVE, TORCH_FIRE, GUARDS_SLEEP
     if arg in INV: # Only items that are in the inventory can be used
         if arg == "keys":
-            if arg in INV:
-                printw("Type 'open' instead.")
-                return
-        elif LOC == "your cell" and arg == "belt": #--------------------------BELT--------------------
-            if GUARD1_IS_ALIVE == True:
+            if LOC != "your cell":
+                printw("Nothing happens")
+            else:
+                printw("You use the keys and open the door to the corridor.")
+                rooms[LOC]["doorOpen"]["south"][0] = True
+        elif arg == "belt": #--------------------------BELT--------------------
+            if LOC != "your cell":
+                printw("Nothing happens...")
+            elif GUARD1_IS_ALIVE == True:
                 GUARD1_IS_ALIVE = False
                 printw("You call the guard. He comes to you with an angry face."
                        " When he is near enough, you put the belt around his neck and strangle"
                        " him to death. His dead body falls on the corridor's floor.")
             else:
                 printw("You have already killed the guard.")
-                return
-        elif LOC == "darkness" and arg == "lighter": #-------------------------------LIGHTER------------ ---
+                #return
+        elif arg == "lighter": #-------------------------------LIGHTER------------ ---
             if "torch" in INV:
                 TORCH_FIRE = True
                 printw("You use the lighter and lit the torch. The torch's flame shines.")
-                items["trap button"]["hidden"] = False
+                items["switch"]["hidden"] = False
                 items["spikes trap"]["hidden"] = False
             else:
                 printw("You use the lighter. Nothing special happens...")
-                return
-        elif arg == "pouch": #---------------------------------POUCH--------------------------------------
-            if LOC == "guard room":
+                #return
+        elif arg == "pouch": #---------------------------------POUCH------
+            if LOC != "guard room":
+                printw("Nothing happens...")
+            elif GUARDS_SLEEP == False:
+                printw("You use the pouch. You open it carefully and pour the powders into the warrior' beer jars"
+                       " without them noticing it. After 5 minutes both warriors fall in deep sleep.")
                 GUARDS_SLEEP = True
-                printw("You use the pouch. You open it carefully and pour the powders into the guards' beer jars"
-                       " without them noticing it. After 5 minutes both guards fall in deep sleep.")
             else:
                 printw("You use the pouch. Nothing special happens.")
-                return
+                #return
         elif arg == "torch": #---------------------------------TORCH--------------------------------------
             if TORCH_FIRE == False:
                 printw("There is no point in using an unlit torch.")
             else:
                 printw("You use the torch. Its flame shines.")
-                return
+                #return
         elif arg == "bracelet": #----------------------------WRISTBAND--------------------------------------
             if LOC == "the yard":
                 printw("You use the bracelet. You place it on the gate so that the dragon's head connects to the"
@@ -733,7 +750,7 @@ def itemUse(arg):
                 rooms[LOC]["doorOpen"]["east"][0] = True
             else:
                 printw("You use the bracelet. Nothing special happens...")
-                return
+                #return
     else:
         print("You can only use items that are in your inventory.")
 
@@ -783,7 +800,7 @@ def itemKick(arg):
                 rooms[LOC]["items"].append("pouch")
                 roomRemoveItem(arg)
                 return
-        elif arg == "two guards":
+        elif arg == "two warriors":
             if GUARDS_SLEEP == False:
                 printw(items[arg]["kickable1"][1])
                 gameOver()
@@ -798,7 +815,7 @@ def itemKick(arg):
                 printw(items[arg]["kickable2"][1])
                 roomRemoveItem(arg)
                 return
-        elif arg == "trap button":
+        elif arg == "switch":
             if SPIKES_UP == True:
                 SPIKES_UP = False
                 printw(items[arg]["kickable1"][1])
